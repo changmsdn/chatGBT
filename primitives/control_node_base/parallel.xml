@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <parallel name="parallel">
+        <text name="同时"/>
+        <text name="并行"/>
+        <text name="一起"/>
+    </parallel>
+</root>

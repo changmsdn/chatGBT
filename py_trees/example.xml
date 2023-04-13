@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <root id="1">
+        <child id="2" />
+        <child id="3">
+            <child id="4" />
+        </child>
+    </root>
+</root>

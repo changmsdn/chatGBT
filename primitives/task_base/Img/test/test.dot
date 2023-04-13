@@ -1,0 +1,27 @@
+digraph pastafarianism {
+ordering=out;
+graph [fontname="times-roman"];
+node [fontname="times-roman"];
+edge [fontname="times-roman"];
+parallel [fillcolor=gold, fontcolor=black, fontsize=9, label="parallel\ntype", shape=parallelogram, style=filled];
+sequence [fillcolor=orange, fontcolor=black, fontsize=9, label=sequence, shape=box, style=filled];
+parallel -> sequence;
+action1 [fillcolor=gray, fontcolor=black, fontsize=9, label=action1, shape=ellipse, style=filled];
+sequence -> action1;
+action2 [fillcolor=gray, fontcolor=black, fontsize=9, label=action2, shape=ellipse, style=filled];
+sequence -> action2;
+"action1*" [fillcolor=gray, fontcolor=black, fontsize=9, label="action1*", shape=ellipse, style=filled];
+sequence -> "action1*";
+"sequence*" [fillcolor=orange, fontcolor=black, fontsize=9, label="sequence*", shape=box, style=filled];
+sequence -> "sequence*";
+action5 [fillcolor=gray, fontcolor=black, fontsize=9, label=action5, shape=ellipse, style=filled];
+"sequence*" -> action5;
+action6 [fillcolor=gray, fontcolor=black, fontsize=9, label=action6, shape=ellipse, style=filled];
+"sequence*" -> action6;
+selector [fillcolor=cyan, fontcolor=black, fontsize=9, label=selector, shape=octagon, style=filled];
+parallel -> selector;
+action3 [fillcolor=gray, fontcolor=black, fontsize=9, label=action3, shape=ellipse, style=filled];
+selector -> action3;
+action4 [fillcolor=gray, fontcolor=black, fontsize=9, label=action4, shape=ellipse, style=filled];
+selector -> action4;
+}

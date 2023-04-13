@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root name="test">
+    <parallel name="parallel">
+        <sequence name="sequence">
+            <action name="action"> 我是action</action>
+            <action name="action"/>
+            <sequence name="sequence">
+                <action name="action"/>
+                <action name="action"/>
+            </sequence>
+        </sequence>
+        <selector name="selector">
+            <action name="action"/>
+            <action name="action"/>
+        </selector>
+    </parallel>
+</root>

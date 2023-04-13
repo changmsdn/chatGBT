@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <decorator name="decorator">
+        <text name="如果"/>
+        <text name="当"/>
+        <text name="一旦"/>
+    </decorator>
+</root>
