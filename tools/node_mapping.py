@@ -61,6 +61,10 @@ def find_node_type(word):
     pattern = r'^[^a-zA-Z0-9\u4e00-\u9fa5]+$'
     if word == None or len(word) == 0 or bool(re.match(pattern, word)):
         return None, -1  # word什么都不是
+
+    # 先判断是否是 如果.. 等条件，如果是，生成条件子树
+
+
     # 遍历查找，先查找action_node_base, 然后查找control_node_base，然后查找task_base
     task_str = find_in_task_base(Dir_task_base, word)
     if task_str != None:
@@ -109,6 +113,10 @@ def create_node(node_str):
         return py_trees.behaviours.Running(name=node_str)
     if "action6" in node_str:
         return py_trees.behaviours.Running(name=node_str)
+    if "condition1" in node_str:
+        return py_trees.decorators.Condition(name=node_str)
+    if "condition2" in node_str:
+        return py_trees.decorators.Condition(name=node_str)
     for task_name, dir in task_base_list.items():
         if task_name == node_str:
             return xml_file_to_tree(dir + '.xml')

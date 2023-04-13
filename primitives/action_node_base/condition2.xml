@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <condition name="condition2">
+        <text name="B"/>
+        <text name="BB"/>
+        <text name="BBB" />
+        <text name="BBBB" />
+    </condition>
+</root>

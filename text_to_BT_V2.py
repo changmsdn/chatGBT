@@ -10,13 +10,15 @@ IMG_BT_SAVE_DIR = "primitives/task_base/Img/"
 # 3 受限自然语言的补充。
 # 4 具体任务的布局
 # 5 指代问题和歧义问题
+# 6 xml格式优化
 
-# 6 增加条件的情况。 如果....则...
+# 7 增加条件的情况。 如果....则...
 
 # 具体项目：（环境搭建好）
 # 1 人工智能AI行为树的构建
 
 # 根据一句话创建基元的方法, 返回这个树的根节点以及排列的list
+# 顺序任务中，如果发生了A，那么执行action5，action6
 def create_sub_tree(seg_list):
     sub_BT = None  # 行为树
     for word in seg_list:
@@ -107,7 +109,7 @@ if __name__ == '__main__':
     BT = text_to_tree(task, BT)
     print(py_trees.display.unicode_tree(BT))
 
-    task = "顺序任务执行action5和action6."
+    task = "顺序任务中，如果发生了A，那么执行action5，action6."
     print(task)
     BT = text_to_tree(task, BT)
     print(py_trees.display.unicode_tree(BT))
