@@ -1,10 +1,12 @@
 import jieba
-from tools.XML_trans import *
+from tools.xml_trans import *
 
 BT_SAVE_DIR = "primitives/task_base/"
 IMG_BT_SAVE_DIR = "primitives/task_base/Img/"
 
-# 已经实现：
+"""
+    已经实现：
+"""
 # 1 特定句式的 受限自然语言 转换为 行为树
 # 2 XML的生成和加载，并成功生成行为树
 # 3 条件情况的实现
@@ -12,84 +14,105 @@ IMG_BT_SAVE_DIR = "primitives/task_base/Img/"
 # 5 具体UE环境的搭建
 
 
-# 待解决的问题和要优化的点：
-# 1 组合的规则，遇到模糊不清的，可以使用概率随机
+"""
+    待解决的问题和要优化的点：
+"""
+
+
+# 1 基元映射和组合的规则完善。 遇到模糊不清的，可以使用概率随机
 # 2 具体任务的布局
 # 3 UE AI智能体对行为树的实现
-# 4 受限自然语言的补充
+# 4 论文点：从人机交互的角度来看，人们更偏向于使用重复受限的语言来描述同一个任务
+
 # 5 重用库，重用库除了存放具体任务的行为树，还要放置一个行为树对应的 word2vec 向量。之后重用这个行为树可以根据语义来匹配（相似程度XX之后可以使用）
 # 6 指代问题和歧义问题
 # 7 xml格式优化
 
 
-# 根据一句话创建基元的方法, 返回这个树的根节点以及排列的list
-# 顺序任务中，如果发生了A，那么执行action5，action6
-def create_sub_tree(seg_list):
-    sub_BT = None  # 行为树
-    for word in seg_list:
-        print(word)
-        # node_str 返回具体的节点名称
-        # node_type:  (-1: None) (0: task) (1: action) (2: control)
-        node_str, node_type = find_node_type(word)
-        if node_str is not None:
-            if sub_BT != None:
-                # 如果是控制节点，添加一个索引位置，如果是行为节点直接添加
-                if node_type == 0:
-                    task_node = create_node(node_str)
-                    sub_BT.add_child(task_node)
-                elif node_type == 1:
-                    action_node = create_node(node_str)
-                    sub_BT.add_child(action_node)
-                elif node_type == 2:  # 控制节点，添加索引
-                    control_node = create_node(node_str)
-                    control_node.name = control_node.name + " Index"
-                    sub_BT.add_child(control_node)
-                else:
-                    pass
-            else:
-                # 行为树根节点
-                node = create_node(node_str)
-                sub_BT = node
-    return sub_BT
-
-
-# 倒顺序查找list进行子树的链接
-def link_tree(sub_BT, BT_node):
-    if sub_BT == None or BT_node == 0:
+def combine_BT(primitive, BT, combine_rule):
+    """
+        组合：链接当前子树和总行为树。          待优化
+    """
+    if primitive == None or BT == 0:
         return None
 
+    # 倒顺序查找list进行子树的链接
     # 递归终止条件
-    if not BT_node:
+    if not BT:
         return
 
     # 先遍历所有子节点
-    for child in BT_node.children[::-1]:
-        link_tree(sub_BT, child)
+    for child in BT.children[::-1]:
+        combine_BT(primitive, child, combine_rule)
 
     # 输出当前节点的值, 判断当前节点是否是子树根节点
-    if BT_node.name == sub_BT.name + " Index":
+    if BT.name == primitive.name + " Index":
         # 将原来的索引节点改成真实的节点, 遍历它的父亲节点，然后找到对应的索引替换
-        for index, child in enumerate(BT_node.parent.children):
-            if child.name == sub_BT.name + " Index":
-                BT_node.parent.children[index] = sub_BT
+        for index, child in enumerate(BT.parent.children):
+            if child.name == primitive.name + " Index":
+                BT.parent.children[index] = primitive
                 return BT
     return BT
 
 
-# 任务自然语言描述到行为树的总函数
-def text_to_tree(task, BT=None):
+def create_primitive(seg_list, rule):
+    """
+        基元生成：根据一句话创建基元的方法, 返回这个树的根节点。     待优化
+    """
+    primitive = None  # 基元
+    for word in seg_list:
+        print(word)
+        # node_str  具体的基元名称
+        # node_type 基元的类型 (-1: None) (0: task) (1: action) (2: control)
+        node_str, node_type = find_node_type(word)
+        if node_str is not None:
+            if primitive is not None:
+                # 如果是control节点添加一个索引位置；如果是 action 或 task 直接添加该节点
+                if node_type == 0:  # 任务节点
+                    task_node = create_BT_node(node_str)
+                    primitive.add_child(task_node)
+                elif node_type == 1:  # action节点
+                    action_node = create_BT_node(node_str)
+                    primitive.add_child(action_node)
+                elif node_type == 2:  # 控制节点，添加索引
+                    control_node = create_BT_node(node_str)
+                    control_node.name = control_node.name + " Index"
+                    primitive.add_child(control_node)
+                else:
+                    pass
+            else:
+                # 行为树根节点
+                root_node = create_BT_node(node_str)
+                primitive = root_node
+    return primitive
+
+
+def select_combine_rule(tasks):
+    """
+        句型，依存分析，语义抽象程度 等判断： 以便决定使用哪种 基元生成规则 和 组合规则(rule：规则->1,2,3...)     待优化
+    """
+    return 0, 1
+
+
+def text_to_BT(text, BT=None):
+    """
+        任务自然语言描述到行为树的总函数
+    """
     # 1 语句以句号作为一个节点的生成, 每一句话都是一个子树基元
-    tasks = re.split(r"[.。]", task)
-    # 2 每一次循环产生一个基元任务
+    tasks = re.split(r"[.。]", text)
+    # 2 选择基元生成规则和组合规则
+    primitive_rule, combine_rule = select_combine_rule(tasks)
+
+    # 3 每一次循环产生一个基元任务
     for task in tasks:
         seg_list = jieba.cut(task)
-        # 3 对任务进行子树构建
-        subBT = create_sub_tree(seg_list)
+        # 3 对任务进行基元构建
+        primitive = create_primitive(seg_list, primitive_rule)
         # 4 判断是否有父节点,有就链接
-        if BT == None:
-            BT = subBT
+        if BT is None:
+            BT = primitive
         else:
-            link_tree(subBT, BT)  # 当前生成的行为树结合总行为树
+            combine_BT(primitive, BT, combine_rule)  # 当前生成的行为树结合总行为树
     return BT
 
 
@@ -101,22 +124,22 @@ if __name__ == '__main__':
 
     task = "同时进行顺序任务和选择任务."
     print(task)
-    BT = text_to_tree(task)
+    BT = text_to_BT(task)
     print(py_trees.display.unicode_tree(BT))  # 每句话完成进行行为树的反馈
 
     task = "顺序任务进行action1,action2,action1action1和顺序任务."
     print(task)
-    BT = text_to_tree(task, BT)
+    BT = text_to_BT(task, BT)
     print(py_trees.display.unicode_tree(BT))
 
     task = "选择任务进行action3,action4."
     print(task)
-    BT = text_to_tree(task, BT)
+    BT = text_to_BT(task, BT)
     print(py_trees.display.unicode_tree(BT))
 
     task = "顺序任务中，如果发生了A，那么执行action5，action6."
     print(task)
-    BT = text_to_tree(task, BT)
+    BT = text_to_BT(task, BT)
     print(py_trees.display.unicode_tree(BT))
 
     # 判断是否该任务是否结束？ 结束就命名，并且保存到库中
@@ -138,12 +161,12 @@ if __name__ == '__main__':
 
     task = "顺序进行顺序任务和test."
     print(task)
-    BT = text_to_tree(task)
+    BT = text_to_BT(task)
     print(py_trees.display.unicode_tree(BT))
 
     task = "顺序任务执行action1和action2."
     print(task)
-    BT = text_to_tree(task, BT)
+    BT = text_to_BT(task, BT)
     print(py_trees.display.unicode_tree(BT))
 
     print("为了之后利用它，请给本次任务命名：")
@@ -183,8 +206,8 @@ if __name__ == '__main__':
                 while not describe_end:
                     task = "顺序进行顺序任务和test."
                     print(task)
-                    BT = text_to_tree(task)
-                    print(py_trees.display.unicode_tree(BT))
+                    BT = text_to_BT(task)
+                    print(py_trees.display.unicode_tree(BT))  # 将行为树反馈到交互界面中
                     # 8 任务描述结束判断
                     print("任务描述结束判断")
                     describe_end = False
@@ -200,7 +223,6 @@ if __name__ == '__main__':
                             os.makedirs(dir_path)
                         py_trees.display.render_dot_tree(BT, name=task_name,
                                                          target_directory=IMG_BT_SAVE_DIR + task_name)
-
 
         except Exception as e:
             print("could not understand audio")

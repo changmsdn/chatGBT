@@ -10,10 +10,11 @@ Dir_control_node_base = "primitives/control_node_base"
 Dir_task_base = "primitives/task_base"
 
 
-# 判断 触发词 是否匹配  与人交互学习的 task
 def find_in_task_base(dir, word):
-    # 遍历给定文件夹中的所有文件
-    for filename in os.listdir(dir):
+    """
+        判断 word 是否匹配 task
+    """
+    for filename in os.listdir(dir):  # 遍历给定文件夹中的所有文件
         file_path = os.path.join(dir, filename)
         if os.path.isfile(file_path) and filename.endswith('.xml'):
             # 打开XML文件并解析为 ElementTree
@@ -21,12 +22,13 @@ def find_in_task_base(dir, word):
             root = tree.getroot().getchildren()[0]
             if root.get("name") == word:
                 return root.get("name")
-    # 如果没有找到相同标记值的节点，则返回 None
     return None
 
 
-# 判断 触发词 是否匹配 智能体最基本action
 def find_in_action_node_base(dir, word):
+    """
+        判断 word 是否匹配 action
+    """
     # 遍历给定文件夹中的所有文件
     for filename in os.listdir(dir):
         file_path = os.path.join(dir, filename)
@@ -36,12 +38,13 @@ def find_in_action_node_base(dir, word):
             for element in root.iter():
                 if element.get("name") == word:
                     return root.get("name")
-    # 如果没有找到相同标记值的节点，则返回 None
     return None
 
 
-# 判断 触发词 是否匹配 控制节点
 def find_in_control_node_base(dir, word):
+    """
+        判断 word 是否匹配 control
+    """
     # 遍历给定文件夹中的所有文件
     for filename in os.listdir(dir):
         file_path = os.path.join(dir, filename)
@@ -57,34 +60,34 @@ def find_in_control_node_base(dir, word):
     return None
 
 
-# 判断是否是行为树节点，返回该节点类型，并且判断是控制节点还是行为节点（task属于行为节点）
 def find_node_type(word):
+    """
+        找到 word 匹配 primitive， 返回 primitive标记 和 primitive类型
+    """
     # 如果word是符号或者是空，则返回空
     pattern = r'^[^a-zA-Z0-9\u4e00-\u9fa5]+$'
     if word == None or len(word) == 0 or bool(re.match(pattern, word)):
         return None, -1  # word什么都不是
 
-    # 先判断是否是 如果.. 等条件，如果是，生成条件子树
-
-
     # 遍历查找，先查找action_node_base, 然后查找control_node_base，然后查找task_base
     task_str = find_in_task_base(Dir_task_base, word)
     if task_str != None:
-        return task_str, 0  # word是重用行为，用 0 表示
+        return task_str, 0  # word是task，用 0 表示
 
     action_str = find_in_action_node_base(Dir_action_node_base, word)
     if action_str != None:
-        return action_str, 1  # word是基础行为，用 1 表示
+        return action_str, 1  # word是action，用 1 表示
 
     control_str = find_in_control_node_base(Dir_control_node_base, word)
     if control_str != None:
-        return control_str, 2  # word是控制节点，用 2 表示
-
+        return control_str, 2  # word是control，用 2 表示
     return None, -1
 
 
-# 查找所有任务
 def get_task_base_list():
+    """
+        查找重用库 task_base 的所有任务， 返回任务列表
+    """
     task_base_list = {}
     for file_name in os.listdir(Dir_task_base):
         if os.path.isfile(os.path.join(Dir_task_base, file_name)):
@@ -93,10 +96,10 @@ def get_task_base_list():
     return task_base_list
 
 
-# 创建节点。
-# 根据名字在primitives中查找，存在则创建。
-def create_node(node_str):
-    task_base_list = get_task_base_list()
+def create_BT_node(node_str):
+    """
+        根据名字在 primitives 中查找，存在则创建。
+    """
     if "parallel" in node_str:
         return py_trees.composites.Parallel(name=node_str, policy=py_trees.common.ParallelPolicy.Base)
     if "sequence" in node_str:
@@ -119,27 +122,31 @@ def create_node(node_str):
         return condition.Condition1(name=node_str)
     if "condition2" in node_str:
         return condition.Condition2(name=node_str)
+    task_base_list = get_task_base_list()
     for task_name, dir in task_base_list.items():
         if task_name == node_str:
             return xml_file_to_tree(dir + '.xml')
     return None
 
 
-# 从XML文件中读取树形结构并返回根节点
 def xml_file_to_tree(file_path):
+    """
+        从XML文件中读取树形结构并返回根节点
+    """
     with open(file_path, 'r', encoding='utf-8') as f:
         # 从文件中读取XML数据并创建根元素
         task_root = ET.fromstring(f.read()).getchildren()[0].getchildren()[0]
-
         # 将XML元素转换为树形结构节点
         tree = convert_element(task_root)
     return tree
 
 
-# 将XML元素转换为树形结构节点
 def convert_element(element):
+    """
+        将XML元素转换为树形结构节点
+    """
     # 如果是控制节点或者是action，那么创建节点
-    BT = create_node(element.get("name"))
+    BT = create_BT_node(element.get("name"))
     for child_element in element:
         BT.add_child(convert_element(child_element))
     return BT

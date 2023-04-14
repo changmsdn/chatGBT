@@ -1,4 +1,4 @@
-from tools.node_mapping import *
+from tools.primitive_mapping import *
 
 
 # 将树形结构转换为XML文件并保存到硬盘中
@@ -38,7 +38,7 @@ def xml_file_to_tree(file_path):
 # 将XML元素转换为树形结构节点
 def convert_element(element):
     # 如果是控制节点或者是action，那么创建节点
-    BT = create_node(element.get("name"))
+    BT = create_BT_node(element.get("name"))
     for child_element in element:
         BT.add_child(convert_element(child_element))
     return BT
