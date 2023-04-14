@@ -4,18 +4,26 @@ from tools.XML_trans import *
 BT_SAVE_DIR = "primitives/task_base/"
 IMG_BT_SAVE_DIR = "primitives/task_base/Img/"
 
-# 要优化的点：
-# 1 组合的规则，遇到模糊不清的，可以使用概率随机
-# 2 重用库，重用库除了存放具体任务的行为树，还要放置一个行为树对应的 word2vec 向量。之后重用这个行为树可以根据语义来匹配（相似程度XX之后可以使用）
-# 3 受限自然语言的补充。
-# 4 具体任务的布局
-# 5 指代问题和歧义问题
-# 6 增加条件的情况。 如果....则...
+# 已经实现：
+# 1 特定句式的 受限自然语言 转换为 行为树
+# 2 XML的生成和加载，并成功生成行为树
+# 3 条件情况的实现
+# 4 机器人开始运行时的行为逻辑框架，实时监听欢迎词，任务描述，重用等
+# 5 具体UE环境的搭建
 
-# 具体项目：（环境搭建好）
-# 1 人工智能AI行为树的构建
+
+# 待解决的问题和要优化的点：
+# 1 组合的规则，遇到模糊不清的，可以使用概率随机
+# 2 具体任务的布局
+# 3 UE AI智能体对行为树的实现
+# 4 受限自然语言的补充
+# 5 重用库，重用库除了存放具体任务的行为树，还要放置一个行为树对应的 word2vec 向量。之后重用这个行为树可以根据语义来匹配（相似程度XX之后可以使用）
+# 6 指代问题和歧义问题
+# 7 xml格式优化
+
 
 # 根据一句话创建基元的方法, 返回这个树的根节点以及排列的list
+# 顺序任务中，如果发生了A，那么执行action5，action6
 def create_sub_tree(seg_list):
     sub_BT = None  # 行为树
     for word in seg_list:
@@ -106,7 +114,7 @@ if __name__ == '__main__':
     BT = text_to_tree(task, BT)
     print(py_trees.display.unicode_tree(BT))
 
-    task = "顺序任务执行action5和action6."
+    task = "顺序任务中，如果发生了A，那么执行action5，action6."
     print(task)
     BT = text_to_tree(task, BT)
     print(py_trees.display.unicode_tree(BT))
@@ -148,3 +156,51 @@ if __name__ == '__main__':
 
     BT = xml_file_to_tree(BT_SAVE_DIR + task_name + '.xml')
     print(py_trees.display.unicode_tree(BT))
+
+    # 1设置唤醒词
+
+    wake_word = "11"  # 机器人唤醒
+    end_word = "任务描述结束"  # 任务描述结束定义
+    start_action_word = "action"  # 任务执行
+
+    # 2语音识别器定义
+
+    # 3开始循环
+    while False:
+        # 4 语音识别一直监听，得到语音
+        print("Say something!")
+
+        try:
+            # 5 识别语音并获取文本
+            text = "12  "
+            print("something is ...")
+
+            # 6 检查是否检测到唤醒词
+            if wake_word in text.lower():
+                print("我在，请问想要我做什么？")
+                # 7 任务描述，在没有听到任务结束，或者结束任务时，等待下一个语句进行行为树合并
+                describe_end = False
+                while not describe_end:
+                    task = "顺序进行顺序任务和test."
+                    print(task)
+                    BT = text_to_tree(task)
+                    print(py_trees.display.unicode_tree(BT))
+                    # 8 任务描述结束判断
+                    print("任务描述结束判断")
+                    describe_end = False
+                    if describe_end:  # 任务描述结束
+                        # 9 开始执行的触发词
+                        print("开始执行任务")
+                        # 10 任务重用逻辑
+                        print("为了之后利用它，请给本次任务命名：")
+                        task_name = "test2"
+                        tree_to_xml_file(BT, task_name, BT_SAVE_DIR + task_name + '.xml')
+                        dir_path = IMG_BT_SAVE_DIR + task_name
+                        if not os.path.exists(dir_path):
+                            os.makedirs(dir_path)
+                        py_trees.display.render_dot_tree(BT, name=task_name,
+                                                         target_directory=IMG_BT_SAVE_DIR + task_name)
+
+
+        except Exception as e:
+            print("could not understand audio")

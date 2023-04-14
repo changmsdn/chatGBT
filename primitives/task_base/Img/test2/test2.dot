@@ -22,6 +22,8 @@ parallel -> "sequence**";
 "sequence**" -> "action1**";
 "sequence***" [fillcolor=orange, fontcolor=black, fontsize=9, label="sequence***", shape=box, style=filled];
 "sequence**" -> "sequence***";
+condition1 [fillcolor=gray, fontcolor=black, fontsize=9, label=condition1, shape=ellipse, style=filled];
+"sequence***" -> condition1;
 action5 [fillcolor=gray, fontcolor=black, fontsize=9, label=action5, shape=ellipse, style=filled];
 "sequence***" -> action5;
 action6 [fillcolor=gray, fontcolor=black, fontsize=9, label=action6, shape=ellipse, style=filled];

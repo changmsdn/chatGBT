@@ -2,6 +2,8 @@ import py_trees
 import os
 import re
 import xml.etree.ElementTree as ET
+import condition
+import action
 
 Dir_action_node_base = "primitives/action_node_base"
 Dir_control_node_base = "primitives/control_node_base"
@@ -102,21 +104,21 @@ def create_node(node_str):
     if "selector" in node_str:
         return py_trees.composites.Selector(name=node_str, memory=False)
     if "action1" in node_str:
-        return py_trees.behaviours.Running(name=node_str)
+        return action.Action1(name=node_str)
     if "action2" in node_str:
-        return py_trees.behaviours.Running(name=node_str)
+        return action.Action2(name=node_str)
     if "action3" in node_str:
-        return py_trees.behaviours.Running(name=node_str)
+        return action.Action3(name=node_str)
     if "action4" in node_str:
-        return py_trees.behaviours.Running(name=node_str)
+        return action.Action4(name=node_str)
     if "action5" in node_str:
-        return py_trees.behaviours.Running(name=node_str)
+        return action.Action5(name=node_str)
     if "action6" in node_str:
-        return py_trees.behaviours.Running(name=node_str)
+        return action.Action6(name=node_str)
     if "condition1" in node_str:
-        return py_trees.decorators.Condition(name=node_str)
+        return condition.Condition1(name=node_str)
     if "condition2" in node_str:
-        return py_trees.decorators.Condition(name=node_str)
+        return condition.Condition2(name=node_str)
     for task_name, dir in task_base_list.items():
         if task_name == node_str:
             return xml_file_to_tree(dir + '.xml')
