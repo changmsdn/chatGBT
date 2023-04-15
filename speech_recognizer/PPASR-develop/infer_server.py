@@ -28,7 +28,7 @@ add_arg("port_server",      int,    5000,                 "普通识别服务所
 add_arg("port_stream",      int,    5001,                 "流式识别服务所使用的端口号")
 add_arg("save_path",        str,    'dataset/upload/',    "上传音频文件的保存目录")
 add_arg('use_gpu',          bool,   True,   "是否使用GPU预测")
-add_arg('use_pun',          bool,   False,  "是否给识别结果加标点符号")
+add_arg('use_pun',          bool,   True,  "是否给识别结果加标点符号")
 add_arg('is_itn',           bool,   False,  "是否对文本进行反标准化")
 add_arg('num_web_p',        int,    2,      "多少个预测器，这个是Web服务并发的数量，必须大于等于1")
 add_arg('num_websocket_p',  int,    2,      "多少个预测器，这个是WebSocket同时连接的数量，必须大于等于1")

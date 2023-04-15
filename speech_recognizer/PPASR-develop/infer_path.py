@@ -13,7 +13,7 @@ add_arg('wav_path',         str,    'dataset/test.wav',          "预测音频�
 add_arg('is_long_audio',    bool,   False,                       "是否为长语音")
 add_arg('real_time_demo',   bool,   False,                       "是否使用实时语音识别演示")
 add_arg('use_gpu',          bool,   True,                        "是否使用GPU预测")
-add_arg('use_pun',          bool,   False,                       "是否给识别结果加标点符号")
+add_arg('use_pun',          bool,   True,                       "是否给识别结果加标点符号")
 add_arg('is_itn',           bool,   False,                       "是否对文本进行反标准化")
 add_arg('pun_model_dir',    str,    'models/pun_models/',        "加标点符号的模型文件夹路径")
 add_arg('model_path',       str,    'models/conformer_streaming_fbank/infer',       "导出的预测模型文件路径")
