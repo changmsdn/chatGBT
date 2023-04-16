@@ -8,13 +8,11 @@ import time
 import wave
 from datetime import datetime
 from typing import List
-
+from ppasr.predict import PPASRPredictor
 import websockets
 from flask import request, Flask, render_template
 from flask_cors import CORS
 from concurrent.futures import ProcessPoolExecutor
-
-from ppasr.predict import PPASRPredictor
 from ppasr.utils.logger import setup_logger
 from ppasr.utils.utils import add_arguments, print_arguments
 
@@ -124,9 +122,9 @@ async def stream_server_run(websocket, path):
     logger.info(f'有WebSocket连接建立：{websocket.remote_address}')
     # 寻找空闲的预测器
     use_predictor = None
-    for predictor2 in predictors:
-        if predictor2.running: continue
-        use_predictor = predictor2
+    for predictor in predictors:
+        if predictor.running: continue
+        use_predictor = predictor
         use_predictor.running = True
         break
     if use_predictor is not None:
@@ -185,12 +183,12 @@ def start_server_thread():
 if __name__ == '__main__':
     # 实时语音识别所以要这样处理
     for _ in range(args.num_websocket_p - 1):
-        predictor1 = PPASRPredictor(configs=args.configs,
+        predictor = PPASRPredictor(configs=args.configs,
                                     model_path=args.model_path,
                                     use_gpu=args.use_gpu,
                                     use_pun=args.use_pun,
                                     pun_model_dir=args.pun_model_dir)
-        predictors.append(predictor1)
+        predictors.append(predictor)
     # 创建保存路径
     if not os.path.exists(args.save_path):
         os.makedirs(args.save_path)

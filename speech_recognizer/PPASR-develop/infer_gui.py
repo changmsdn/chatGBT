@@ -60,7 +60,7 @@ class SpeechRecognitionApp:
         # 录音保存的路径
         self.output_path = 'dataset/record'
         # 指定窗口标题
-        self.window.title("夜雨飘零语音识别")
+        self.window.title("chatGBT")
         # 固定窗口大小
         self.window.geometry('870x500')
         self.window.resizable(False, False)

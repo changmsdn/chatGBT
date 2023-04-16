@@ -28,7 +28,7 @@ h1 {
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     margin: 50px auto;
-    max-width: 800px;
+    max-width: 80%;
     padding: 20px;
 }
 
@@ -73,11 +73,29 @@ h1 {
     padding: 10px;
 }
 
+#bt_result {
+    background-color: #aaa;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+}
+
 #result textarea {
     border: none;
     border-radius: 5px;
     font-size: 16px;
-    height: 300px;
+    height: 600px;
+    margin-top: 10px;
+    padding: 10px;
+    resize: none;
+    width: 100%;
+}
+
+#bt_result textarea {
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    height: 600px;
     margin-top: 10px;
     padding: 10px;
     resize: none;

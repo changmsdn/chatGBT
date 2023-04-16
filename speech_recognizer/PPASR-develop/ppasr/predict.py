@@ -27,7 +27,7 @@ class PPASRPredictor:
         """
         语音识别预测工具
         :param configs: 配置文件路径或者是yaml读取到的配置参数
-        :param model_tag: 如果configs为None，则使用项目提供的模型预测
+        :param model_tag: 如果configs为 None，则使用项目提供的模型预测
         :param model_path: 导出的预测模型文件夹路径
         :param use_pun: 是否使用加标点符号的模型
         :param pun_model_dir: 给识别结果加标点符号的模型文件夹路径
