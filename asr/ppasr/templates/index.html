@@ -8,20 +8,42 @@
     <link href="index.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
+<!-- 头-->
 <div id="header">
-    <h1>chatGBT</h1>
+    <h1>C</h1>
+    <h1>H</h1>
+    <h1>A</h1>
+    <h1>T</h1>
+    <h1>G</h1>
+    <h1>B</h1>
+    <h1>T</h1>
 </div>
+<!-- 主题 -->
 <div id="content">
-    <div>
-        <a id="upload" onclick="uploadAudioFile()" class="file">短音频文件识别</a>
-        <a id="upload_long" onclick="uploadLongAudioFile()" class="file">长音频文件识别</a>
-        <img id="record_btn" onclick="record()" src="record.png" alt="录音"/>
+    <!--  选择部分，可以选择输入录音文件，也可以点击录音  -->
+    <div class="select clearfix">
+        <div class="recognize">
+            <h1 class="recognize">File Recognition：</h1>
+            <a id="upload" onclick="uploadAudioFile()" class="file">Short Audio</a>
+            <a id="upload_long" onclick="uploadLongAudioFile()" class="file">Long Audio</a>
+        </div>
+        <div class="recording">
+            <h1>Audio Input：</h1>
+            <img id="record_btn" onclick="record()" src="record.png" alt="录音"/>
+        </div>
     </div>
-    <div id="result">
-        <textarea id="result_p"></textarea>
-    </div>
-    <div id="bt_result">
-        <textarea id="result_bt"></textarea>
+
+    <div class="display">
+        <div id="result">
+             <h1 class="text">Task Description</h1>
+            <textarea id="result_p"></textarea>
+             <h1 class="text">ChatGBT Reply</h1>
+            <textarea id="result_chatgbt" readonly="readonly"></textarea>
+        </div>
+        <div id="bt_result">
+            <h1 class="text">Behavior Tree Result</h1>
+            <img id="bt_img" src="bts/test2.png">
+        </div>
     </div>
 </div>
 <script>

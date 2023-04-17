@@ -1,0 +1,183 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Helvetica Neue", "Roboto", sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+/* 保证使用了浮动窗口后的错误 */
+.clearfix:before, .clearfix:after {
+    content: "";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+#header {
+    position: absolute;
+    margin: 0px 5px 0px 5px;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #333;
+    width: 140px;
+    height: 700px;
+    top: 5%;
+
+}
+
+#header h1 {
+    display: block;
+    margin-left: 50px;
+    font-size: 48px;
+    letter-spacing: 2px;
+}
+
+#content {
+    float: right;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    margin: 5px;
+    width: 90%;
+    padding: 20px;
+}
+
+#content .select .recognize{
+    float: left;
+}
+
+#content .select h1{
+    display: inline-block;
+    float: left;
+    font-size: 24px;
+    margin-top: 5px;
+    margin-right: 20px;
+    margin-left: 50px;
+}
+
+#content .select a {
+    float: left;
+    padding: 10px;
+    margin-right: 50px;
+    margin-bottom: 20px;
+
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
+    font-size: 18px;
+    color: #333;
+
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    width: 200px;
+}
+
+#content a:hover {
+    background-color: #f2f2f2;
+    cursor: pointer ;
+}
+
+#content .select img {
+    float: left;
+    cursor: pointer;
+    height: 45px;
+    transition: transform 0.2s;
+    width: 45px;
+}
+
+#content .select img:hover {
+    transform: scale(1.5);
+}
+
+#content .recording{
+    float: left;
+}
+
+
+#result {
+    float: left;
+    padding: 10px;
+    width: 39%;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
+}
+
+#result .text{
+    width: 100%;
+    margin: 10px auto;
+    text-align: center;
+    line-height: 24px;
+    font-size: 24px;
+    color: black;
+}
+
+
+#result_p {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    border: 2px solid black;
+    border-radius: 5px;
+    font-size: 16px;
+    height: 150px;
+    padding: 10px;
+    resize: none;
+    width: 100%;
+}
+
+#result_p:hover{
+    transform:scale(1.05);
+}
+
+#result_chatgbt {
+    margin-top: 10px;
+    border: 2px solid black;
+    border-radius: 5px;
+    font-size: 16px;
+    height: 400px;
+    padding: 10px;
+    resize: none;
+    width: 100%;
+}
+
+
+#bt_result {
+    float: right;
+    width: 60%;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+}
+
+#bt_result .text{
+    width: 100%;
+    margin: 10px auto;
+    text-align: center;
+    line-height: 24px;
+    font-size: 24px;
+    color: black;
+}
+
+#bt_img {
+    margin-top: 10px;
+    margin-left: 20px;
+    border: 2px solid black;
+    border-radius: 5px;
+    width: 95%;
+}
+
+@media only screen and (max-width: 600px) {
+    #content a {
+        width: 100%;
+    }
+}
