@@ -35,10 +35,10 @@
 
     <div class="display">
         <div id="result">
-             <h1 class="text">Task Description</h1>
-            <textarea id="result_p"></textarea>
-             <h1 class="text">ChatGBT Reply</h1>
-            <textarea id="result_chatgbt" readonly="readonly"></textarea>
+            <h1 class="text">Task Description</h1>
+            <textarea id="result_p" onkeydown="enterBtn(event.keyCode)"></textarea>
+            <h1 class="text">ChatGBT Reply</h1>
+            <textarea id="result_chatgbt" readonly="readonly" placeholder="bot: Say something"></textarea>
         </div>
         <div id="bt_result">
             <h1 class="text">Behavior Tree Result</h1>
@@ -46,11 +46,77 @@
         </div>
     </div>
 </div>
+
 <script>
     var is_recording = false;
     var host = location.origin;
     var recorder;
     var textarea = document.getElementById('result_p')
+    var behavior_img = document.getElementById("bt_img")
+
+    // 唤醒词
+    const wake_list = ["笨笨", "jayden"]
+    var is_wake = false;
+    // 任务描述结束词
+    const task_end_list = ["结束", "执行", "开始"]
+    var is_task_end = false;
+    // 是否有子树
+
+    function enterBtn(a) {
+        // 将Task Description 语音翻译的文本  显示在ChatGBT Reply中
+        if (a == 13) { // 13表示是回车键
+            asr_result = document.getElementById("result_p").value;
+            // 判断文字是否是唤醒词
+            if (wake_list.some(item => asr_result(item))) {
+                is_wake = true;
+                document.getElementById("result_chatgbt").append("you: " + asr_result + "\n");
+                document.getElementById("result_chatgbt").append("bot: I'm here. How can I help you ^_^ ???" + "\n");
+                return;
+            }
+            // 判断是否是任务描述结束的关键词
+            if (task_end_list.some(item => asr_result(item))) {
+                is_task_end = true
+                document.getElementById("result_chatgbt").append("you: " + asr_result + "\n");
+                document.getElementById("result_chatgbt").append("bot: Please name this task. I will be stronger. ^_^" + "\n");
+                return;
+            }
+
+            // 唤醒后的逻辑
+            if (is_wake) {
+                document.getElementById("result_chatgbt").append("you: " + asr_result + "\n");
+                // 调用后台服务生成行为树基元，并将生成的图片加载到页面上
+                try {
+                    //发送文本到后端服务
+                    const response = fetch('/generate-image', {
+                        method: 'Post',
+                        body: JSON.stringify({asr_result}),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    // 将响应内容作为blob获取
+                    const blob = response.blob();
+
+                    // 生成blob的URL
+                    const imageUrl = URL.createObjectURL(blob);
+
+                    // 将图片URL赋值给img元素的src属性，以显示从后端服务获取的图像
+                    behavior_img.src = imageUrl;
+                } catch (error) {
+                    console.error("There was a problem")
+                }
+            }
+            // 任务结束逻辑
+            if (is_task_end){
+                // 为任务命名，并且将BT变为空
+            }
+
+        }
+    }
 
 
     function record() {

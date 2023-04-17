@@ -10,11 +10,21 @@ from datetime import datetime
 from typing import List
 from ppasr.predict import PPASRPredictor
 import websockets
-from flask import request, Flask, render_template
+from flask import request, Flask, render_template, send_file
+from io import BytesIO
+from PIL import Image, ImageDraw, ImageFont
 from flask_cors import CORS
 from concurrent.futures import ProcessPoolExecutor
 from ppasr.utils.logger import setup_logger
 from ppasr.utils.utils import add_arguments, print_arguments
+
+import text_to_BT
+
+BT_SAVE_DIR = "primitives/task_base/"
+IMG_BT_SAVE_DIR = "primitives/task_base/Img/"
+
+BT_SAVE_DIR_TEMP = "primitives/task_base/temp/"
+BT = None
 
 logger = setup_logger(__name__)
 
@@ -112,6 +122,31 @@ def recognition_long_audio():
     return str({"error": 3, "msg": "audio is None!"})
 
 
+@app.route('/generate-image', methods=['POST'])
+def generate_image():
+    global BT
+    # 获取前端发送的文本信息
+    data = request.get_json()
+    text = data.get('text')
+    # 调用text_to_BT服务转化为响应的行为树，并且保存响应的图片。过度图片也要存
+    BT = text_to_BT.text_to_BT(text, BT)
+
+    # 将BT保存到temp_img中
+    temp_task_name = 'temp'
+    text_to_BT.tree_to_xml_file(BT, temp_task_name, BT_SAVE_DIR_TEMP + temp_task_name + '.xml')
+    text_to_BT.py_trees.display.render_dot_tree(BT, name=temp_task_name, target_directory=IMG_BT_SAVE_DIR + temp_task_name)
+
+    # 读取图片
+    with open(BT_SAVE_DIR_TEMP+"temp.png", 'rb') as f:
+        img = Image.open(f)
+        img_byte_arr = BytesIO()
+        img.save(img_byte_arr, format='PNG')
+        img_byte_arr.seek(0)
+        # 返回响应图片
+        return send_file(img_byte_arr, mimetype='image/png')
+
+
+
 @app.route('/')
 def home():
     return render_template("index.html")
@@ -150,12 +185,14 @@ async def stream_server_run(websocket, path):
                 await websocket.send(send_data)
                 # 结束了要关闭当前的连接
                 if is_end: await websocket.close()
+
             except Exception as e:
                 logger.error(f'识别发生错误：错误信息：{e}')
                 try:
                     await websocket.send(str({"code": 2, "msg": "recognition fail!"}).replace("'", '"'))
                 except:
                     pass
+
         # 重置流式识别
         use_predictor.reset_stream()
         use_predictor.running = False

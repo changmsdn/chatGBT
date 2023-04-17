@@ -3,6 +3,7 @@ window.URL = window.URL || window.webkitURL;
 //获取计算机的设备：摄像头或者录音设备
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
+// stream: 录音输入的流  url: 录音使用的地址端口  textResult: 返回的位置
 var PPASRRecorder = function (stream, url, textResult) {
     var socket = new WebSocket(url);
     var sampleBits = 16; //输出采样数位 8, 16
@@ -168,8 +169,10 @@ PPASRRecorder.throwError = function (message) {
         }
     }
 }
+
 //是否支持录音
 PPASRRecorder.canRecording = (navigator.getUserMedia != null);
+
 //获取录音机
 PPASRRecorder.get = function (callback, url, textarea) {
     if (callback) {
