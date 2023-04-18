@@ -21,21 +21,19 @@ body {
 
 #header {
     position: absolute;
-    margin: 0px 5px 0px 5px;
+    margin: 0 5px 0 20px;
     border-radius: 10px;
     background-color: #fff;
     color: #333;
-    width: 140px;
-    height: 700px;
-    top: 5%;
-
+    width: 100px;
+    height: 550px;
+    top: 10%;
 }
 
 #header h1 {
     display: block;
-    margin-left: 50px;
-    font-size: 48px;
-    letter-spacing: 2px;
+    margin-left: 40px;
+    font-size: 36px;
 }
 
 #content {
@@ -57,14 +55,14 @@ body {
     float: left;
     font-size: 24px;
     margin-top: 5px;
-    margin-right: 20px;
-    margin-left: 50px;
+    margin-right: 10px;
+    margin-left: 20px;
 }
 
 #content .select a {
     float: left;
     padding: 10px;
-    margin-right: 50px;
+    margin-right: 20px;
     margin-bottom: 20px;
 
     background-color: #fff;
@@ -85,7 +83,7 @@ body {
     cursor: pointer ;
 }
 
-#content .select img {
+#content .select #record_btn {
     float: left;
     cursor: pointer;
     height: 45px;
@@ -93,12 +91,21 @@ body {
     width: 45px;
 }
 
-#content .select img:hover {
-    transform: scale(1.5);
+#content .select #record_btn:hover {
+    transform: scale(2);
 }
 
 #content .recording{
     float: left;
+}
+
+#logo{
+    position: absolute;
+    float: right;
+    top: 5%;
+    left: 80%;
+    height: 100px;
+    width: 280px;
 }
 
 
@@ -123,27 +130,45 @@ body {
 
 
 #result_p {
+    float: left;
     margin-top: 10px;
     margin-bottom: 30px;
     border: 2px solid black;
     border-radius: 5px;
-    font-size: 16px;
-    height: 150px;
+    font-size: 18px;
+    font-weight: bold;
+    height: 100px;
     padding: 10px;
     resize: none;
-    width: 100%;
+    width: 90%;
+}
+
+.btn_generate_bt{
+    float: right;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    background-color: #f2f2f2;
+    width: 9%;
+    height:100px;
+    border-radius: 5px;
+    border: 2px solid black;
+}
+.btn_generate_bt:hover{
+    transform:scale(1.05);
+    cursor: pointer ;
 }
 
 #result_p:hover{
-    transform:scale(1.05);
+    transform:scale(1.02);
 }
 
 #result_chatgbt {
     margin-top: 10px;
     border: 2px solid black;
     border-radius: 5px;
-    font-size: 16px;
-    height: 400px;
+    font-size: 18px;
+    font-weight: bold;
+    height: 335px;
     padding: 10px;
     resize: none;
     width: 100%;
@@ -160,8 +185,9 @@ body {
 }
 
 #bt_result .text{
-    width: 100%;
-    margin: 10px auto;
+    display: inline-block;
+    margin-left: 30px;
+    float: left;
     text-align: center;
     line-height: 24px;
     font-size: 24px;
@@ -169,8 +195,8 @@ body {
 }
 
 #bt_img {
-    margin-top: 10px;
-    margin-left: 20px;
+    display: block;
+    margin: 20px auto;
     border: 2px solid black;
     border-radius: 5px;
     width: 95%;

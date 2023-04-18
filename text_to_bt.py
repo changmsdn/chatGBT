@@ -2,7 +2,8 @@ import jieba
 from tools.xml_trans import *
 
 BT_SAVE_DIR = "primitives/task_base/"
-IMG_BT_SAVE_DIR = "primitives/task_base/Img/"
+IMG_BT_SAVE_DIR = "primitives/task_base/images/"
+BT_SAVE_DIR_TEMP = "primitives/task_base/temp/"
 
 """
     已经实现：
@@ -46,10 +47,10 @@ def combine_BT(primitive, BT, combine_rule):
         combine_BT(primitive, child, combine_rule)
 
     # 输出当前节点的值, 判断当前节点是否是子树根节点
-    if BT.name == primitive.name + " Index":
+    if BT.name == primitive.name + "Index":
         # 将原来的索引节点改成真实的节点, 遍历它的父亲节点，然后找到对应的索引替换
         for index, child in enumerate(BT.parent.children):
-            if child.name == primitive.name + " Index":
+            if child.name == primitive.name + "Index":
                 BT.parent.children[index] = primitive
                 return BT
     return BT
@@ -76,7 +77,7 @@ def create_primitive(seg_list, rule):
                     primitive.add_child(action_node)
                 elif node_type == 2:  # 控制节点，添加索引
                     control_node = create_BT_node(node_str)
-                    control_node.name = control_node.name + " Index"
+                    control_node.name = control_node.name + "Index"
                     primitive.add_child(control_node)
                 else:
                     pass
@@ -126,7 +127,7 @@ if __name__ == '__main__':
     print(task)
     BT = text_to_BT(task)
     print(py_trees.display.unicode_tree(BT))  # 每句话完成进行行为树的反馈
-
+    tree_to_xml_file(BT, "temp", BT_SAVE_DIR_TEMP + 'temp.xml')
     task = "顺序任务进行action1,action2,action1action1和顺序任务."
     print(task)
     BT = text_to_BT(task, BT)

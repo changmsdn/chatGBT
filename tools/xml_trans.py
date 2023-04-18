@@ -16,7 +16,11 @@ def tree_to_xml_file(BT, task_name, file_path):
 # 将树形结构节点转换为XML元素
 def convert_node(node, parent):
     # 创建XML元素
-    xml_node = ET.Element(node.name, {"name": node.name})
+    # 如果node.name是以Index结尾的，则标签存入node, 属性name存入nodeIndex
+    name = node.name
+    if "Index" in name:
+        name = name.replace("Index","")
+    xml_node = ET.Element(name, {"name": node.name})
     # 将XML元素添加到父元素中
     parent.append(xml_node)
     # 递归处理所有子节点

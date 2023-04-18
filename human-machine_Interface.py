@@ -12,18 +12,17 @@ from ppasr.predict import PPASRPredictor
 import websockets
 from flask import request, Flask, render_template, send_file
 from io import BytesIO
-from PIL import Image, ImageDraw, ImageFont
 from flask_cors import CORS
 from concurrent.futures import ProcessPoolExecutor
 from ppasr.utils.logger import setup_logger
 from ppasr.utils.utils import add_arguments, print_arguments
 
-import text_to_BT
+from text_to_bt import *
 
 BT_SAVE_DIR = "primitives/task_base/"
-IMG_BT_SAVE_DIR = "primitives/task_base/Img/"
-
+IMG_BT_SAVE_DIR = "primitives/task_base/images/"
 BT_SAVE_DIR_TEMP = "primitives/task_base/temp/"
+
 BT = None
 
 logger = setup_logger(__name__)
@@ -122,29 +121,38 @@ def recognition_long_audio():
     return str({"error": 3, "msg": "audio is None!"})
 
 
-@app.route('/generate-image', methods=['POST'])
-def generate_image():
+@app.route('/generate_bt_img', methods=['POST'])
+def generate_bt_img():
+    global BT  # 多线程可能有点问题
+    # 获取前端发送的文本信息
+    task_description = request.data.decode('utf-8')
+    print(task_description)
+    # 调用text_to_BT服务转化为响应的行为树，并且保存响应的图片。过度图片也要存
+    BT = text_to_BT(task_description, BT)
+    # 将BT保存到temp_img中
+    tree_to_xml_file(BT, "temp", BT_SAVE_DIR_TEMP + 'temp.xml')
+    py_trees.display.render_dot_tree(BT, name="temp", target_directory=BT_SAVE_DIR_TEMP)
+    # 读取图片
+    image_data = open(BT_SAVE_DIR_TEMP + "/temp.png", 'rb').read()
+    return send_file(BytesIO(image_data), mimetype='image/png')
+
+
+@app.route('/generate_and_reuse_bt_img', methods=['POST'])
+def generate_and_reuse_bt_img():
     global BT
     # 获取前端发送的文本信息
-    data = request.get_json()
-    text = data.get('text')
-    # 调用text_to_BT服务转化为响应的行为树，并且保存响应的图片。过度图片也要存
-    BT = text_to_BT.text_to_BT(text, BT)
-
+    task_name = request.data.decode('utf-8')
     # 将BT保存到temp_img中
-    temp_task_name = 'temp'
-    text_to_BT.tree_to_xml_file(BT, temp_task_name, BT_SAVE_DIR_TEMP + temp_task_name + '.xml')
-    text_to_BT.py_trees.display.render_dot_tree(BT, name=temp_task_name, target_directory=IMG_BT_SAVE_DIR + temp_task_name)
-
+    tree_to_xml_file(BT, task_name, BT_SAVE_DIR + task_name + '.xml')
+    # 创建任务存放目录
+    dir_path = IMG_BT_SAVE_DIR + task_name
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+    py_trees.display.render_dot_tree(BT, name=task_name, target_directory=dir_path)
+    BT = None
     # 读取图片
-    with open(BT_SAVE_DIR_TEMP+"temp.png", 'rb') as f:
-        img = Image.open(f)
-        img_byte_arr = BytesIO()
-        img.save(img_byte_arr, format='PNG')
-        img_byte_arr.seek(0)
-        # 返回响应图片
-        return send_file(img_byte_arr, mimetype='image/png')
-
+    image_data = open(dir_path +"/"+ task_name + ".png", 'rb').read()
+    return send_file(BytesIO(image_data), mimetype='image/png')
 
 
 @app.route('/')

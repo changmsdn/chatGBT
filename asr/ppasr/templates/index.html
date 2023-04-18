@@ -31,90 +31,157 @@
             <h1>Audio Input：</h1>
             <img id="record_btn" onclick="record()" src="record.png" alt="录音"/>
         </div>
+        <img id="logo" src="bts/logo.png" alt="LOGO">
     </div>
 
     <div class="display">
         <div id="result">
             <h1 class="text">Task Description</h1>
             <textarea id="result_p" onkeydown="enterBtn(event.keyCode)"></textarea>
+            <img id="btn_generate_bt" class="btn_generate_bt" src="bts/btn_bt_generate.png" alt="BT_G">
             <h1 class="text">ChatGBT Reply</h1>
             <textarea id="result_chatgbt" readonly="readonly" placeholder="bot: Say something"></textarea>
         </div>
         <div id="bt_result">
             <h1 class="text">Behavior Tree Result</h1>
-            <img id="bt_img" src="bts/test2.png">
+            <img id="bt_img" src="bts/bt_display.png"  alt="Real-time Behavior Tree Image">
         </div>
     </div>
 </div>
 
 <script>
-    var is_recording = false;
-    var host = location.origin;
-    var recorder;
-    var textarea = document.getElementById('result_p')
-    var behavior_img = document.getElementById("bt_img")
+    let is_recording = false;
+    const host = location.origin;
+    let recorder;
 
+    let asr_result;
+    const textarea = document.getElementById('result_p');
+    const behavior_img = document.getElementById("bt_img");
     // 唤醒词
-    const wake_list = ["笨笨", "jayden"]
-    var is_wake = false;
+    const wake_list = ["treebot", "treemate", "jayden"]
+    let is_wake = false;
     // 任务描述结束词
-    const task_end_list = ["结束", "执行", "开始"]
-    var is_task_end = false;
-    // 是否有子树
+    const task_end_list = ["over", "execute", "begin", "come on", "end"]
+    let is_task_end = false;
 
-    function enterBtn(a) {
-        // 将Task Description 语音翻译的文本  显示在ChatGBT Reply中
-        if (a == 13) { // 13表示是回车键
-            asr_result = document.getElementById("result_p").value;
-            // 判断文字是否是唤醒词
-            if (wake_list.some(item => asr_result(item))) {
-                is_wake = true;
-                document.getElementById("result_chatgbt").append("you: " + asr_result + "\n");
-                document.getElementById("result_chatgbt").append("bot: I'm here. How can I help you ^_^ ???" + "\n");
-                return;
-            }
-            // 判断是否是任务描述结束的关键词
-            if (task_end_list.some(item => asr_result(item))) {
-                is_task_end = true
-                document.getElementById("result_chatgbt").append("you: " + asr_result + "\n");
-                document.getElementById("result_chatgbt").append("bot: Please name this task. I will be stronger. ^_^" + "\n");
-                return;
-            }
-
-            // 唤醒后的逻辑
-            if (is_wake) {
-                document.getElementById("result_chatgbt").append("you: " + asr_result + "\n");
-                // 调用后台服务生成行为树基元，并将生成的图片加载到页面上
-                try {
-                    //发送文本到后端服务
-                    const response = fetch('/generate-image', {
-                        method: 'Post',
-                        body: JSON.stringify({asr_result}),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-
-                    // 将响应内容作为blob获取
-                    const blob = response.blob();
-
-                    // 生成blob的URL
-                    const imageUrl = URL.createObjectURL(blob);
-
-                    // 将图片URL赋值给img元素的src属性，以显示从后端服务获取的图像
-                    behavior_img.src = imageUrl;
-                } catch (error) {
-                    console.error("There was a problem")
+    // 每隔一秒执行一次，读取TaskDescription的内容
+    setInterval(() => {
+        asr_result = document.getElementById("result_p").value;
+        // 如果还没有被唤醒词唤醒，则检测该词是否是唤醒词，并设置
+        if (!is_wake) {
+            for (let i = 0; i < wake_list.length; i++) {
+                if (asr_result.includes(wake_list[i])) {
+                    is_wake = true;
+                    is_task_end = false;
+                    document.getElementById("result_chatgbt").append("You     : " + asr_result + "\n");
+                    document.getElementById("result_chatgbt").append("TreeMate: I'm here. How can I help you ^_^ ? ? ?" + "\n");
+                    document.getElementById("result_p").value = null;
+                    return;
                 }
             }
-            // 任务结束逻辑
-            if (is_task_end){
-                // 为任务命名，并且将BT变为空
-            }
+        }
 
+        // 如果还没有触发结束词，则一直检测是否结束。
+        if (!is_task_end) {
+            for (let i = 0; i < task_end_list.length; i++) {
+                if (asr_result.includes(task_end_list[i])) {
+                    is_wake = false;
+                    is_task_end = true;
+                    document.getElementById("result_chatgbt").append("you     : " + asr_result + "\n");
+                    document.getElementById("result_chatgbt").append("TreeMate: Please name this task. I will be stronger. ^_^" + "\n");
+                    document.getElementById("result_p").value = null;
+                    return;
+                }
+            }
+        }
+    }, 1000);
+
+    // 当按下生成基元按钮时，触发事件
+    const btn_generate_bt  = document.getElementById("btn_generate_bt");
+    btn_generate_bt.addEventListener("mousedown",function(){
+        // 唤醒后的逻辑。可优化，由于不支持流式的识别，触发另一个事件，一旦按下按钮才开始解析基元。
+        if (is_wake) {
+            document.getElementById("result_chatgbt").append("You: " + asr_result + "\n");
+            document.getElementById("result_p").value = null;
+            // 调用后台服务生成行为树基元，并将生成的图片加载到页面上
+            try {
+                // 创建一个XMLHttpRequest对象
+                const xhr = new XMLHttpRequest();
+                // 定义一个请求的 URL
+                const url = "/generate_bt_img";
+                // 收到相应时的回调函数
+                xhr.onload = function () {
+                    // 将相应的二进制数据作为图片的src
+                    // 创建一个 Image 对象
+                    const img = new Image();
+                    // 当图片加载完成后执行的回调函数
+                    img.onload = function () {
+                        // 设置图片合适的大小
+                        set_bt_img_width(img.width);
+                    };
+                    // 创建一个 Blob 对象，并设置其类型和内容
+                    const blob = new Blob([xhr.response], {type: 'image/png'});
+                    img.src = URL.createObjectURL(blob);
+                    behavior_img.src = img.src;
+                };
+                // 设置请求的method和url
+                xhr.open('Post', url);
+                // 设置相应类型为二进制数据
+                xhr.responseType = 'blob';
+                // 发送请求
+                xhr.send(asr_result);
+            } catch (error) {
+                console.error("There was a problem")
+            }
+        }
+        // 任务结束逻辑
+        if (is_task_end) {
+            document.getElementById("result_chatgbt").append("You     : " + asr_result + "\n");
+            document.getElementById("result_chatgbt").append("TreeMate:  I have successfully learned to " + asr_result + " task. ^_^ " + "\n\n");
+            document.getElementById("result_p").value = null;
+            // 为任务命名，并且保存最终图片到 primitives的 task_base中
+            try {
+                // 创建一个XMLHttpRequest对象
+                const xhr = new XMLHttpRequest();
+                // 定义一个请求的 URL
+                const url = "/generate_and_reuse_bt_img";
+                // 收到相应时的回调函数
+                xhr.onload = function () {
+                    // 将相应的二进制数据作为图片的src
+                    // 创建一个 Image 对象
+                    const img = new Image();
+                    // 当图片加载完成后执行的回调函数
+                    img.onload = function () {
+                        // 设置图片合适的大小
+                        set_bt_img_width(img.width);
+                    };
+                    // 创建一个 Blob 对象，并设置其类型和内容
+                    const blob = new Blob([xhr.response], {type: 'image/png'});
+                    img.src = URL.createObjectURL(blob);
+                    behavior_img.src = img.src;
+                };
+                // 设置请求的method和url
+                xhr.open('Post', url);
+                // 设置相应类型为二进制数据
+                xhr.responseType = 'blob';
+                // 发送请求
+                xhr.send(asr_result);
+            } catch (error) {
+                console.error("There was a problem")
+            }
+        }
+    });
+
+    // 设置图片大小
+    function set_bt_img_width(img_width) {
+        alert(img_width)
+        if (img_width < 300) {  // 这个1200的单位比像素小很多
+            // 计算放大后的宽度和高度
+            behavior_img.style.width = '40%';
+        } else if (img_width < 500) {
+            behavior_img.style.width = '60%';
+        } else {
+            behavior_img.style.width = '95%'
         }
     }
 
