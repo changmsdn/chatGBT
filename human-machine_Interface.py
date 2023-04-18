@@ -122,7 +122,7 @@ def recognition_long_audio():
 
 @app.route('/generate_bt_img', methods=['POST'])
 def generate_bt_img():
-    global BT  # 多线程可能有点问题
+    global BT  # 多线程可能有点问题。查看是否存在temp.xml,如果存在则解析作为总的BT。 当结束时删除这个temp目录所有文件。
     # 获取前端发送的文本信息
     task_description = request.data.decode('utf-8')
     print(task_description)

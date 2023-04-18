@@ -35,7 +35,7 @@ def combine_BT(primitive, BT, combine_rule):
     """
         组合：链接当前子树和总行为树。          待优化
     """
-    if primitive == None or BT == 0:
+    if primitive is None or BT == 0:
         return None
     # 倒顺序查找list进行子树的链接
     # 递归终止条件
@@ -91,7 +91,9 @@ def create_primitive(seg_list, rule):
 def select_combine_rule(tasks):
     """
         句型，依存分析，语义抽象程度 等判断： 以便决定使用哪种 基元生成规则 和 组合规则(rule：规则->1,2,3...)     待优化
+        具体情况判断： 语言是否无歧义。对每个节点都有数字标注，比如创建两个顺序节点，第一个是A，第二个是B           待优化
     """
+
     return 0, 1
 
 
@@ -128,6 +130,7 @@ if __name__ == '__main__':
     BT = text_to_BT(task)
     print(py_trees.display.unicode_tree(BT))  # 每句话完成进行行为树的反馈
     tree_to_xml_file(BT, "temp", BT_SAVE_DIR_TEMP + 'temp.xml')
+
     task = "顺序任务进行action1,action2,action1action1和顺序任务."
     print(task)
     BT = text_to_BT(task, BT)
@@ -224,6 +227,5 @@ if __name__ == '__main__':
                             os.makedirs(dir_path)
                         py_trees.display.render_dot_tree(BT, name=task_name,
                                                          target_directory=IMG_BT_SAVE_DIR + task_name)
-
         except Exception as e:
             print("could not understand audio")
