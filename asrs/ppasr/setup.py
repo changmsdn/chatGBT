@@ -29,7 +29,7 @@ if __name__ == "__main__":
         long_description_content_type='text/markdown',
         url='https://github.com/yeyupiaoling/PPASR',
         download_url='https://github.com/yeyupiaoling/PPASR.git',
-        keywords=['asr', 'paddle'],
+        keywords=['asrs', 'paddle'],
         classifiers=[
             'Intended Audience :: Developers',
             'License :: OSI Approved :: Apache Software License',

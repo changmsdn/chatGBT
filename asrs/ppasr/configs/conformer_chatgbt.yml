@@ -47,15 +47,15 @@ dataset_conf:
   # 过滤最长的音频长度，当为-1的时候不限制长度
   max_duration: 20
   # 训练数据的数据列表路径
-  train_manifest: 'asr/ppasr/dataset/manifest.train'
+  train_manifest: 'asrs/ppasr/dataset/manifest.train'
   # 测试数据的数据列表路径
-  test_manifest: 'asr/ppasr/dataset/manifest.test'
+  test_manifest: 'asrs/ppasr/dataset/manifest.test'
   # 数据字典的路径
-  dataset_vocab: 'asr/ppasr/dataset/vocabulary.txt'
+  dataset_vocab: 'asrs/ppasr/dataset/vocabulary.txt'
   # 均值和标准值得json文件路径，后缀 (.json)
-  mean_istd_path: 'asr/ppasr/dataset/mean_istd.json'
+  mean_istd_path: 'asrs/ppasr/dataset/mean_istd.json'
   # 噪声数据列表文件
-  noise_manifest_path: 'asr/ppasr/dataset/manifest.noise'
+  noise_manifest_path: 'asrs/ppasr/dataset/manifest.noise'
   # 数据列表类型，支持txt、binary
   manifest_type: 'txt'
 
@@ -89,7 +89,7 @@ ctc_beam_search_decoder_conf:
   # 剪枝的最大值
   cutoff_top_n: 40
   # 语言模型文件路径
-  language_model_path: 'asr/ppasr/lm/zh_giga.no_cna_cmn.prune01244.klm'
+  language_model_path: 'asrs/ppasr/lm/zh_giga.no_cna_cmn.prune01244.klm'
 
 # 优化方法参数配置
 optimizer_conf:

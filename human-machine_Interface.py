@@ -2,7 +2,6 @@ import _thread  # 创建线程用的
 import argparse  # 解析参数
 import asyncio
 import functools
-import os
 import sys
 import time
 import wave
@@ -29,22 +28,22 @@ logger = setup_logger(__name__)
 
 parser = argparse.ArgumentParser(description=__doc__)
 add_arg = functools.partial(add_arguments, argparser=parser)
-add_arg('configs', str, 'asr/ppasr/configs/conformer_chatgbt.yml', "配置文件")
+add_arg('configs', str, 'asrs/ppasr/configs/conformer_chatgbt.yml', "配置文件")
 add_arg("host", str, '0.0.0.0', "监听主机的IP地址")
 add_arg("port_server", int, 5000, "普通识别服务所使用的端口号")
 add_arg("port_stream", int, 5001, "流式识别服务所使用的端口号")
-add_arg("save_path", str, 'asr/ppasr/dataset/upload/', "上传音频文件的保存目录")
+add_arg("save_path", str, 'asrs/ppasr/dataset/upload/', "上传音频文件的保存目录")
 add_arg('use_gpu', bool, True, "是否使用GPU预测")
 add_arg('use_pun', bool, True, "是否给识别结果加标点符号")
 add_arg('is_itn', bool, False, "是否对文本进行反标准化")
 add_arg('num_web_p', int, 2, "多少个预测器，这个是Web服务并发的数量，必须大于等于1")
 add_arg('num_websocket_p', int, 2, "多少个预测器，这个是WebSocket同时连接的数量，必须大于等于1")
-add_arg('model_path', str, 'asr/ppasr/models/conformer_streaming_fbank/infer', "导出的预测模型文件路径")
-add_arg('pun_model_dir', str, 'asr/ppasr/models/pun_models/', "加标点符号的模型文件夹路径")
+add_arg('model_path', str, 'asrs/ppasr/models/conformer_streaming_fbank/infer', "导出的预测模型文件路径")
+add_arg('pun_model_dir', str, 'asrs/ppasr/models/pun_models/', "加标点符号的模型文件夹路径")
 args = parser.parse_args()
 print_arguments(args=args)
 
-app = Flask('PPASR', template_folder="asr/ppasr/templates", static_folder="asr/ppasr/static", static_url_path="/")
+app = Flask('PPASR', template_folder="asrs/ppasr/templates", static_folder="asrs/ppasr/static", static_url_path="/")
 # 允许跨越访问
 CORS(app)
 
