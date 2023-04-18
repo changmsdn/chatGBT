@@ -187,6 +187,7 @@ body {
 #bt_result .text{
     display: inline-block;
     margin-left: 30px;
+    margin-right: 300px;
     float: left;
     text-align: center;
     line-height: 24px;

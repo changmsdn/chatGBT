@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root><task name="demo2"><sequence name="sequence"><sequence name="sequence"><action1 name="action1" /><action2 name="action2" /></sequence><parallel name="parallel"><sequence name="sequence"><action1 name="action1" /><action2 name="action2" /><action1 name="action1" /><sequence name="sequence"><condition1 name="condition1" /><action5 name="action5" /><action6 name="action6" /></sequence></sequence><selector name="selector"><action3 name="action3" /><action4 name="action4" /></selector></parallel></sequence></task></root>

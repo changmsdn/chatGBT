@@ -37,7 +37,7 @@
     <div class="display">
         <div id="result">
             <h1 class="text">Task Description</h1>
-            <textarea id="result_p" onkeydown="enterBtn(event.keyCode)"></textarea>
+            <textarea id="result_p"></textarea>
             <img id="btn_generate_bt" class="btn_generate_bt" src="bts/btn_bt_generate.png" alt="BT_G">
             <h1 class="text">ChatGBT Reply</h1>
             <textarea id="result_chatgbt" readonly="readonly" placeholder="bot: Say something"></textarea>
@@ -174,7 +174,6 @@
 
     // 设置图片大小
     function set_bt_img_width(img_width) {
-        alert(img_width)
         if (img_width < 300) {  // 这个1200的单位比像素小很多
             // 计算放大后的宽度和高度
             behavior_img.style.width = '40%';
