@@ -26,4 +26,10 @@ action3 [fillcolor=gray, fontcolor=black, fontsize=9, label=action3, shape=ellip
 selector -> action3;
 action4 [fillcolor=gray, fontcolor=black, fontsize=9, label=action4, shape=ellipse, style=filled];
 selector -> action4;
+"sequence**" [fillcolor=orange, fontcolor=black, fontsize=9, label="sequence**", shape=box, style=filled];
+parallel -> "sequence**";
+"action2*" [fillcolor=gray, fontcolor=black, fontsize=9, label="action2*", shape=ellipse, style=filled];
+"sequence**" -> "action2*";
+"action1**" [fillcolor=gray, fontcolor=black, fontsize=9, label="action1**", shape=ellipse, style=filled];
+"sequence**" -> "action1**";
 }

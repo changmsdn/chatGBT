@@ -1,5 +1,6 @@
 import jieba
-from tools.xml_trans import *
+
+from tools.primitive_mapping import *
 
 BT_SAVE_DIR = "primitives/task_base/"
 IMG_BT_SAVE_DIR = "primitives/task_base/images/"
@@ -18,42 +19,140 @@ BT_SAVE_DIR_TEMP = "primitives/task_base/temp/"
 """
     待解决的问题和要优化的点：
 """
+
 # 1 具体任务的布局
 # 2 基元映射和组合的规则完善。 遇到模糊不清的，可以使用概率随机。  重点！！
 # 3 流式语音识别的问题：1 只能选中文模型 或者 英文模型，中文模型无法翻译为英文。 2 不能完全使用语音交互，需要点击按钮才能读取完整的一句话实现行为树生成
 # 4 UE AI智能体对行为树的实现
 # 5 xml格式优化
 # 6 语义歧义消除： 定制语义歧义消除模板函数
+# 7 jieba对行为树关键节点和关键词的分词定制优化  等待
 
-# 7 论文点：从人机交互的角度来看，人们更偏向于使用重复受限的语言来描述同一个任务
-# 8 重用库映射匹配优化：除了存放具体任务的行为树，还要放置对应行为树的 word2vec 向量。之后重用这个行为树可以根据语义来匹配（相似程度XX之后可以使用）
-# 9 指代问题（默认已经解决）
-# 10 重用库如何抽象存储 以及 可重用行为树本身的优化。
+# 8 论文点：从人机交互的角度来看，人们更偏向于使用重复受限的语言来描述同一个任务
+# 9 重用库映射匹配优化：除了存放具体任务的行为树，还要放置对应行为树的 word2vec 向量。之后重用这个行为树可以根据语义来匹配（相似程度XX之后可以使用）
+# 10 指代问题（默认已经解决）
+# 11 重用库如何抽象存储 以及 可重用行为树本身的优化。
 
 
-def combine_BT(primitive, BT, combine_rule):
+def replace_bt_by_reverse_find(bt, primitive):
+    """
+        倒顺序查找list进行子树的链接
+    """
+    stack = [bt]
+    while stack:
+        node = stack.pop()
+        for child in node.children:
+            stack.append(child)
+            if child.name == primitive.name + "Index":
+                child.parent.replace_child(child, primitive)
+                return bt
+    return bt
+
+
+def replace_bt_by_index(bt, location, primitive):
+    """
+        根据指定的具体位置替换基元
+    """
+    layer = location[0]
+    position = location[1]
+    if not bt:
+        return None
+    if layer == 1 and position == 1:  # 如果要替换的位置是第一个，则直接返回这个基元
+        return primitive
+
+    queue = [bt]
+    cur_level = 1
+    while queue:
+        level_size = len(queue)
+        for i in range(level_size):
+            node = queue.pop(0)
+            if cur_level == layer and i + 1 == position:
+                node.parent.replace_child(node, primitive)
+                return bt
+            for child in node.children:
+                queue.append(child)
+        cur_level += 1
+
+    return None
+
+
+def create_control_index(bt):
+    """
+        遍历一个树，并且返回符合Index的每个位置
+    """
+    # 根据control_node_base获得带有所有控制节点作为key的字典
+    control_index_dict = create_control_index_list()
+    # 定义结果列表和当前层数
+    cur_layer = 1
+
+    # 定义深度优先遍历函数
+    def dfs(node, layer, location):
+        # 如果当前节点为空，直接返回
+        if not node:
+            return
+        # 如果该节点带有Index，将当前节点的位置信息添加到结果列表中
+        if "Index" in node.name:
+            control_index_dict[node.name].append([layer, location])
+        # 遍历当前节点的子节点
+        for i, child in enumerate(node.children):
+            # 递归遍历子节点
+            dfs(child, layer + 1, i + 1)
+
+    # 从根节点开始遍历
+    dfs(bt, cur_layer, 0)
+    # 返回结果列表
+    return control_index_dict
+
+
+def combine_bt(primitive, bt, combine_rule=None):
     """
         组合：链接当前子树和总行为树。          待优化
+
+        组合情况判断：
+            有无 ControlIndex
+                有, 遍历一遍所有节点，为同名 ControlIndex 递增编号放入相应数组中。：
+                        例：{
+                                parallelIndex: [[第几层，从1开始, 第几个位置，从1开始],[1,3],[2,4]]
+                                sequenceIndex: [[1,1],[3,5]]
+                                parallelIndex: []
+                            }
+                    如果数量只有一个：
+                        直接将当前 primitive 加入到 bt 这个Index中
+                    如果数量有多个，查询语句中是否有明确位置关系的描述：
+                        有：
+                            分析这个位置，对应然后链接成功
+
+                        无：
+                            调用语义歧义消除函数，询问加入到哪个位置
+                无：
+                    说明总树已经完成（就是一个 task 节点。或者是一个没有控制节点不断生成的树）。
+                    反馈用户说没有连接索引，问是否先执行这个行为树。问用户满意不，然后保存这个行为树。然后在建立一颗新的行为树。
     """
-    if primitive is None or BT == 0:
+    if primitive is None or bt is None:
         return None
-    # 倒顺序查找list进行子树的链接
-    # 递归终止条件
-    if not BT:
-        return
 
-    # 先遍历所有子节点
-    for child in BT.children[::-1]:
-        combine_BT(primitive, child, combine_rule)
+    # 得到总行为树的Index字典
+    control_dict = create_control_index(bt)
 
-    # 输出当前节点的值, 判断当前节点是否是子树根节点
-    if BT.name == primitive.name + "Index":
-        # 将原来的索引节点改成真实的节点, 遍历它的父亲节点，然后找到对应的索引替换
-        for index, child in enumerate(BT.parent.children):
-            if child.name == primitive.name + "Index":
-                BT.parent.children[index] = primitive
-                return BT
-    return BT
+    # 获取当前 primitive 的头节点名称,加上Index与之对应
+    key_name = primitive.name + "Index"
+
+    control_index_list = control_dict[key_name]
+    # 有对应 primitive 的index。需要进行组合
+    if control_index_list is not None:
+        # index数量只有一个，直接进行拼接
+        index_number = len(control_dict[key_name])
+        if index_number == 1:
+            location = control_index_list[0]
+            replace_bt_by_index(bt, location, primitive)
+            return bt
+        else:  # index的数量有多个，根据组合规则进行判断. 暂时只按顺序拼接
+            bt = replace_bt_by_reverse_find(bt, primitive)
+            return bt
+    else:  # 没有index，说明不需要组合。有可能是新的任务。也有可能是描述不清楚导致歧义
+        pass
+
+    return bt
 
 
 def create_primitive(seg_list, rule):
@@ -61,6 +160,7 @@ def create_primitive(seg_list, rule):
         基元生成：根据一句话创建基元的方法, 返回这个树的根节点。     待优化
     """
     primitive = None  # 基元
+    # rule0：按顺序读取关键词
     for word in seg_list:
         print(word)
         # node_str  具体的基元名称
@@ -81,6 +181,8 @@ def create_primitive(seg_list, rule):
                     primitive.add_child(control_node)
                 else:
                     pass
+                    # 无法解析，调用语义歧义消除模块
+                    # primitive_generate_disambiguation()
             else:
                 # 行为树根节点
                 root_node = create_BT_node(node_str)
@@ -97,26 +199,26 @@ def select_combine_rule(tasks):
     return 0, 1
 
 
-def text_to_BT(text, BT=None):
+def text_to_BT(all_text, bt=None):
     """
         任务自然语言描述到行为树的总函数
     """
     # 1 语句以句号作为一个节点的生成, 每一句话都是一个子树基元
-    tasks = re.split(r"[.。]", text)
+    task_list = re.split(r"[.。!！]", all_text)
     # 2 选择基元生成规则和组合规则
-    primitive_rule, combine_rule = select_combine_rule(tasks)
+    primitive_rule, combine_rule = select_combine_rule(task_list)
 
     # 3 每一次循环产生一个基元任务
-    for task in tasks:
-        seg_list = jieba.cut(task)
-        # 3 对任务进行基元构建
-        primitive = create_primitive(seg_list, primitive_rule)
-        # 4 判断是否有父节点,有就链接
-        if BT is None:
-            BT = primitive
+    for sub_task in task_list:
+        sub_task_seg_list = jieba.cut(sub_task)
+        # 4 对任务进行基元构建
+        primitive = create_primitive(sub_task_seg_list, primitive_rule)
+        # 5 判断是否之前已经有行为树, 有就尝试链接
+        if bt is None:
+            bt = primitive
         else:
-            combine_BT(primitive, BT, combine_rule)  # 当前生成的行为树结合总行为树
-    return BT
+            combine_bt(primitive, bt, combine_rule)
+    return bt
 
 
 if __name__ == '__main__':
@@ -125,7 +227,7 @@ if __name__ == '__main__':
     # 触发词，唤醒词
     print("我在，请问想要我做什么？")
 
-    task = "同时进行顺序任务和选择任务."
+    task = "同时进行顺序任务和选择任务和顺序任务."
     print(task)
     BT = text_to_BT(task)
     print(py_trees.display.unicode_tree(BT))  # 每句话完成进行行为树的反馈
@@ -137,6 +239,11 @@ if __name__ == '__main__':
     print(py_trees.display.unicode_tree(BT))
 
     task = "选择任务进行action3,action4."
+    print(task)
+    BT = text_to_BT(task, BT)
+    print(py_trees.display.unicode_tree(BT))
+
+    task = "顺序任务进行action2,action1."
     print(task)
     BT = text_to_BT(task, BT)
     print(py_trees.display.unicode_tree(BT))
