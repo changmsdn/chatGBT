@@ -116,7 +116,7 @@ var PPASRRecorder = function (stream, url, textResult) {
         let data = JSON.parse(jsonStr)
         let code = data['code'];
         if (code === 0){
-            textResult.innerText = data['result']
+            textResult.value = data['result']
         }else {
             let msg = data['msg'];
             alert('报错，错误信息：' + msg)

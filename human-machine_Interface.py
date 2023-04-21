@@ -150,8 +150,16 @@ def generate_and_reuse_bt_img():
     py_trees.display.render_dot_tree(BT, name=task_name, target_directory=dir_path)
     BT = None
     # 读取图片
-    image_data = open(dir_path +"/"+ task_name + ".png", 'rb').read()
+    image_data = open(dir_path + "/" + task_name + ".png", 'rb').read()
     return send_file(BytesIO(image_data), mimetype='image/png')
+
+
+@app.route('/restart', methods=['GET'])
+def restart():
+    global BT
+    print("行为树被置为None，执行成功")
+    BT = None
+    return str({"code": 0, "msg": "success"})
 
 
 @app.route('/')

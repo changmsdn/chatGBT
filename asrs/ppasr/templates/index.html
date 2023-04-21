@@ -44,7 +44,7 @@
         </div>
         <div id="bt_result">
             <h1 class="text">Behavior Tree Result</h1>
-            <img id="bt_img" src="bts/bt_display.png"  alt="Real-time Behavior Tree Image">
+            <img id="bt_img" src="bts/bt_display.png" alt="Real-time Behavior Tree Image">
         </div>
     </div>
 </div>
@@ -63,6 +63,9 @@
     // 任务描述结束词
     const task_end_list = ["over", "execute", "begin", "come on", "end"]
     let is_task_end = false;
+    // 重新开始任务
+    const restart_list = ["restart", "resume", "start over"]
+    let is_restart = false;
 
     // 每隔一秒执行一次，读取TaskDescription的内容
     setInterval(() => {
@@ -94,11 +97,39 @@
                 }
             }
         }
+
+        // 如果是重新开始，则清空所有内容，并且清除后台暂存的bt
+        if (!is_restart) {
+            for (let i = 0; i < restart_list.length; i++) {
+                if (asr_result.includes(restart_list[i])) {
+                    is_wake = true;
+                    is_task_end = false;
+
+                    document.getElementById("result_p").value = null;
+                    // 调用后台服务，清空bt
+                    try {
+                        // 创建一个XMLHttpRequest对象
+                        const xhr = new XMLHttpRequest();
+                        // 定义一个请求的 URL
+                        const url = "/restart";
+                        // 设置请求的method和url
+                        xhr.open('Get', url);
+                        // 发送请求
+                        xhr.send(asr_result);
+                        document.getElementById("result_chatgbt").append("\nTreeMate: Reset, please re-enter your requirements. ^_^ \n");
+                        behavior_img.src = "/bts/bt_display.png";
+                        behavior_img.style.width = '95%'
+                    } catch (error) {
+                        console.error("There was a problem")
+                    }
+                }
+            }
+        }
     }, 1000);
 
     // 当按下生成基元按钮时，触发事件
-    const btn_generate_bt  = document.getElementById("btn_generate_bt");
-    btn_generate_bt.addEventListener("mousedown",function(){
+    const btn_generate_bt = document.getElementById("btn_generate_bt");
+    btn_generate_bt.addEventListener("mousedown", function () {
         // 唤醒后的逻辑。可优化，由于不支持流式的识别，触发另一个事件，一旦按下按钮才开始解析基元。
         if (is_wake) {
             document.getElementById("result_chatgbt").append("You: " + asr_result + "\n");

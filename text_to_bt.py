@@ -34,7 +34,7 @@ BT_SAVE_DIR_TEMP = "primitives/task_base/temp/"
 # 11 重用库如何抽象存储 以及 可重用行为树本身的优化。
 
 
-def replace_bt_by_reverse_find(bt, primitive):
+def combine_bt_by_sequence(bt, primitive):
     """
         倒顺序查找list进行子树的链接
     """
@@ -49,14 +49,14 @@ def replace_bt_by_reverse_find(bt, primitive):
     return bt
 
 
-def replace_bt_by_index(bt, location, primitive):
+def combine_bt_by_location(bt, location, primitive):
     """
         根据指定的具体位置替换基元
     """
     layer = location[0]
     position = location[1]
     if not bt:
-        return None
+        return bt
     if layer == 1 and position == 1:  # 如果要替换的位置是第一个，则直接返回这个基元
         return primitive
 
@@ -72,8 +72,7 @@ def replace_bt_by_index(bt, location, primitive):
             for child in node.children:
                 queue.append(child)
         cur_level += 1
-
-    return None
+    return bt
 
 
 def create_control_index(bt):
@@ -144,10 +143,10 @@ def combine_bt(primitive, bt, combine_rule=None):
         index_number = len(control_dict[key_name])
         if index_number == 1:
             location = control_index_list[0]
-            replace_bt_by_index(bt, location, primitive)
+            bt = combine_bt_by_location(bt, location, primitive)
             return bt
         else:  # index的数量有多个，根据组合规则进行判断. 暂时只按顺序拼接
-            bt = replace_bt_by_reverse_find(bt, primitive)
+            bt = combine_bt_by_sequence(bt, primitive)
             return bt
     else:  # 没有index，说明不需要组合。有可能是新的任务。也有可能是描述不清楚导致歧义
         pass
