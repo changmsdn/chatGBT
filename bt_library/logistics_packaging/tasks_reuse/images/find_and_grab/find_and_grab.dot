@@ -1,0 +1,13 @@
+digraph pastafarianism {
+ordering=out;
+graph [fontname="times-roman"];
+node [fontname="times-roman"];
+edge [fontname="times-roman"];
+sequence [fillcolor=orange, fontcolor=black, fontsize=9, label=sequence, shape=box, style=filled];
+selectorIndex [fillcolor=cyan, fontcolor=black, fontsize=9, label=selectorIndex, shape=octagon, style=filled];
+sequence -> selectorIndex;
+"sequence*" [fillcolor=orange, fontcolor=black, fontsize=9, label="sequence*", shape=box, style=filled];
+sequence -> "sequence*";
+"selectorIndex*" [fillcolor=cyan, fontcolor=black, fontsize=9, label="selectorIndex*", shape=octagon, style=filled];
+"sequence*" -> "selectorIndex*";
+}

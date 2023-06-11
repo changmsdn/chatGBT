@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <task name="avoid_obstacle">
+        <sequence name="sequence">
+            <obstacle_detection name="obstacle_detection"/>
+            <bypass name="bypass"/>
+        </sequence>
+    </task>
+</root>

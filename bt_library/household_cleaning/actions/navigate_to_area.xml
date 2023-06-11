@@ -1,0 +1,8 @@
+<root>
+    <condition name="navigate_to_area">
+        <synonyms name="navigate to area"/>
+        <synonyms name="navigate to a region"/>
+        <synonyms name="导航至区域"/>
+        <synonyms name="规划路径导航到需要清洁的区域"/>
+    </condition>
+</root>

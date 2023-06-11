@@ -1,0 +1,8 @@
+<root>
+    <action name="positioning_parts">
+        <synonyms name="positioning parts"/>
+        <synonyms name="locating parts"/>
+        <synonyms name="定位零件"/>
+        <synonyms name="将零件放置在正确的位置"/>
+    </action>
+</root>

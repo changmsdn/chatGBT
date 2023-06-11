@@ -1,0 +1,38 @@
+<root>
+    <instruction>
+        <level>1</level>
+        <desc>执行一个sequence节点，然后添加子节点correct_positioning、envs_safety、parts_detection和part_status。</desc>
+        <bt>
+            <sequence name='sequence'>
+                <correct_positioning name='correct_positioning'/>
+                <envs_safety name='envs_safety'/>
+                <parts_detection name='parts_detection'/>
+                <part_status name='part_status'/>
+            </sequence>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>2</level>
+        <desc>首先检测是否正确定位工件，然后确认环境安全以及零件是否齐全，最后检查零件状态。</desc>
+        <bt>
+            <sequence name='sequence'>
+                <correct_positioning name='correct_positioning'/>
+                <envs_safety name='envs_safety'/>
+                <parts_detection name='parts_detection'/>
+                <part_status name='part_status'/>
+            </sequence>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>3</level>
+        <desc>执行任务：检查工件和零件状态是否正常。</desc>
+        <bt>
+            <sequence name='sequence'>
+                <correct_positioning name='correct_positioning'/>
+                <envs_safety name='envs_safety'/>
+                <parts_detection name='parts_detection'/>
+                <part_status name='part_status'/>
+            </sequence>
+        </bt>
+    </instruction>
+</root>

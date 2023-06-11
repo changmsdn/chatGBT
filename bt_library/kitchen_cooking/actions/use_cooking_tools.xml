@@ -1,0 +1,8 @@
+<root>
+    <condition name="use_cooking_tools">
+        <synonyms name="use cooking tools"/>
+        <synonyms name="use cooking utensils"/>
+        <synonyms name="使用烹饪工具"/>
+        <synonyms name="使用烹饪工具进行烹饪操作"/>
+    </condition>
+</root>

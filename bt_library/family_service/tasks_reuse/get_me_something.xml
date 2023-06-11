@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root><task name="get_me_something"><sequence name="sequence"><selector name="selector"><battery_check name="battery_check" /><charging name="charging" /></selector><obstacle_detection name="obstacle_detection" /><grab name="grab" /><parallel name="parallel"><selector name="selector"><move_forward name="move_forward" /><sequence name="sequence"><obstacle_detection name="obstacle_detection" /><bypass name="bypass" /></sequence></selector><scanning name="scanning" /></parallel></sequence></task></root>

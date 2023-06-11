@@ -1,0 +1,12 @@
+<root>
+    <action name="grab">
+        <synonyms name="take"/>
+        <synonyms name="拿"/>
+        <synonyms name="拿起"/>
+        <synonyms name="抓取"/>
+        <synonyms name="抓出"/>
+        <synonyms name="捡取"/>
+        <!--        该action需要的参数  要拿的实体-->
+        <param name="something"/>
+    </action>
+</root>

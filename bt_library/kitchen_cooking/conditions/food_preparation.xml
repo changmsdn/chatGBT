@@ -1,0 +1,9 @@
+<root>
+    <condition name="food_preparation">
+        <synonyms name="food preparation"/>
+        <synonyms name="ingredients preparation"/>
+        <synonyms name="食材准备情况"/>
+        <synonyms name="食材是否准备完成"/>
+        <synonyms name="是否有已准备好的食材"/>
+    </condition>
+</root>

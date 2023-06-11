@@ -1,0 +1,9 @@
+<root>
+    <condition name="cooking_utensils">
+        <synonyms name="cooking utensils"/>
+        <synonyms name="condition of cooking tools"/>
+        <synonyms name="烹饪工具准备情况"/>
+        <synonyms name="烹饪工具情况"/>
+        <synonyms name="是否具备所需的烹饪工具"/>
+    </condition>
+</root>

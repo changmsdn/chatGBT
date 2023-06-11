@@ -1,0 +1,9 @@
+<root>
+    <action name="grab_parts">
+        <synonyms name="grab parts"/>
+        <synonyms name="grab"/>
+        <synonyms name="grabbing parts"/>
+        <synonyms name="抓取零件"/>
+        <synonyms name="抓取需要装配的零件"/>
+    </action>
+</root>

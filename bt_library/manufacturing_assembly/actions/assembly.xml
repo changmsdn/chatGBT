@@ -1,0 +1,7 @@
+<root>
+    <action name="assembly">
+        <synonyms name="assemble"/>
+        <synonyms name="装配"/>
+        <synonyms name="完成零件的装配操作"/>
+    </action>
+</root>

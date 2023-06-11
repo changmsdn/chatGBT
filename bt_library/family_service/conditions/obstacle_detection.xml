@@ -1,0 +1,9 @@
+<root>
+    <condition name="obstacle_detection">
+        <synonyms name="find obstacle"/>
+        <synonyms name="findObstacle"/>
+        <synonyms name="障碍物发现"/>
+        <synonyms name="障碍物检测"/>
+        <synonyms name="有障碍"/>
+    </condition>
+</root>

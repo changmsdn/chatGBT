@@ -1,0 +1,8 @@
+<root>
+    <condition name="prepare_food">
+        <synonyms name="prepare food"/>
+        <synonyms name="prepare ingredients"/>
+        <synonyms name="准备食材"/>
+        <synonyms name="处理和准备所需的食材"/>
+    </condition>
+</root>

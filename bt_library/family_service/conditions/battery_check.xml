@@ -1,0 +1,9 @@
+<root>
+    <condition name="battery_check">
+        <synonyms name="have enough battery"/>
+        <synonyms name="haveEnoughBattery"/>
+        <synonyms name="电池检查"/>
+        <synonyms name="电量是否充足"/>
+        <synonyms name="电是否充足"/>
+    </condition>
+</root>

@@ -1,0 +1,13 @@
+digraph pastafarianism {
+ordering=out;
+graph [fontname="times-roman"];
+node [fontname="times-roman"];
+edge [fontname="times-roman"];
+sequence [fillcolor=orange, fontcolor=black, fontsize=9, label=sequence, shape=box, style=filled];
+cleaning_tool_detection [fillcolor=gray, fontcolor=black, fontsize=9, label=cleaning_tool_detection, shape=ellipse, style=filled];
+sequence -> cleaning_tool_detection;
+clean_area_detection [fillcolor=gray, fontcolor=black, fontsize=9, label=clean_area_detection, shape=ellipse, style=filled];
+sequence -> clean_area_detection;
+check_cleanliness [fillcolor=gray, fontcolor=black, fontsize=9, label=check_cleanliness, shape=ellipse, style=filled];
+sequence -> check_cleanliness;
+}

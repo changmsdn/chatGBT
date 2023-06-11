@@ -1,0 +1,13 @@
+digraph pastafarianism {
+ordering=out;
+graph [fontname="times-roman"];
+node [fontname="times-roman"];
+edge [fontname="times-roman"];
+sequence [fillcolor=orange, fontcolor=black, fontsize=9, label=sequence, shape=box, style=filled];
+package_type [fillcolor=gray, fontcolor=black, fontsize=9, label=package_type, shape=ellipse, style=filled];
+sequence -> package_type;
+grab_package [fillcolor=gray, fontcolor=black, fontsize=9, label=grab_package, shape=ellipse, style=filled];
+sequence -> grab_package;
+target_location [fillcolor=gray, fontcolor=black, fontsize=9, label=target_location, shape=ellipse, style=filled];
+sequence -> target_location;
+}

@@ -1,0 +1,6 @@
+<root>
+    <action name="charging">
+        <synonyms name="充电"/>
+        <synonyms name="加油"/>
+    </action>
+</root>

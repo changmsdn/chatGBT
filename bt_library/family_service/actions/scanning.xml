@@ -1,0 +1,9 @@
+<root>
+    <action name="scanning">
+        <synonyms name="scan surroundings"/>
+        <synonyms name="扫描"/>
+        <synonyms name="识别周围物体"/>
+        <synonyms name="定位周围物体"/>
+        <synonyms name="扫描周围"/>
+    </action>
+</root>

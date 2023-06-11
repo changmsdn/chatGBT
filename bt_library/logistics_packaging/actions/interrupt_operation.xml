@@ -1,0 +1,10 @@
+<root>
+    <action name="interrupt_operation">
+        <synonyms name="interrupt operation"/>
+        <synonyms name="interruption operation"/>
+        <synonyms name="interruption"/>
+        <synonyms name="中断操作"/>
+        <synonyms name="中断"/>
+        <synonyms name="在遇到障碍物或危险情况时中断操作"/>
+    </action>
+</root>

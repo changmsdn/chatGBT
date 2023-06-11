@@ -1,0 +1,8 @@
+<root>
+    <condition name="package_type">
+        <synonyms name="package type"/>
+        <synonyms name="parcel type"/>
+        <synonyms name="包裹类型"/>
+        <synonyms name="识别包裹的类型"/>
+    </condition>
+</root>

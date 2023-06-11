@@ -1,0 +1,9 @@
+<root>
+    <controller name="sequence">
+        <synonyms name="Sequence" />
+        <synonyms name="order" />
+        <synonyms name="顺序" />
+        <synonyms name="依次" />
+        <synonyms name="按序" />
+    </controller>
+</root>

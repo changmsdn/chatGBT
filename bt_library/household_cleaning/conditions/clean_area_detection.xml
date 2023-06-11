@@ -1,0 +1,8 @@
+<root>
+    <condition name="clean_area_detection">
+        <synonyms name="clean area detection"/>
+        <synonyms name="clean area inspection"/>
+        <synonyms name="清洁区域检测"/>
+        <synonyms name="是否存在需要清洁的区域"/>
+    </condition>
+</root>

@@ -1,0 +1,6 @@
+<root>
+    <action name="move_back">
+        <synonyms name="后退"/>
+        <synonyms name="后移"/>
+    </action>
+</root>

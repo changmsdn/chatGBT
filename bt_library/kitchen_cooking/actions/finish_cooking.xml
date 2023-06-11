@@ -1,0 +1,7 @@
+<root>
+    <condition name="finish_cooking">
+        <synonyms name="finish cooking"/>
+        <synonyms name="完成烹饪"/>
+        <synonyms name="完成整个烹饪过程"/>
+    </condition>
+</root>

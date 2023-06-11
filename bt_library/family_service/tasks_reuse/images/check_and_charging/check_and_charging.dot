@@ -1,0 +1,11 @@
+digraph pastafarianism {
+ordering=out;
+graph [fontname="times-roman"];
+node [fontname="times-roman"];
+edge [fontname="times-roman"];
+selector [fillcolor=cyan, fontcolor=black, fontsize=9, label=selector, shape=octagon, style=filled];
+battery_check [fillcolor=gray, fontcolor=black, fontsize=9, label=battery_check, shape=ellipse, style=filled];
+selector -> battery_check;
+charging [fillcolor=gray, fontcolor=black, fontsize=9, label=charging, shape=ellipse, style=filled];
+selector -> charging;
+}

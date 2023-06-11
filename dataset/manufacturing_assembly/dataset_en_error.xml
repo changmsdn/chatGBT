@@ -1,0 +1,417 @@
+<root>
+    <instruction>
+        <level>1</level>
+        <desc>Add child node correct_positioning to selector node envs_safety.</desc>
+        <bt>
+            <selector name='envs_safety' type='controller'>
+                <correct_positioning name='correct_positioning' type='condition'/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child node position_parts to selector node envs_safety.</desc>
+        <bt>
+            <selector name='envs_safety' type='controller'>
+                <positioning_parts name='positioning_parts' type='action'/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add a child node grab_parts to sequence node.</desc>
+        <bt>
+            <sequence name='sequence' type="controller">
+                <grab_parts name='grab_parts' type="action"/>
+            </sequence>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes correct_positioning and parts_detection to a sequence node, add child nodes grab_parts and
+            positioning_parts to a parallel node, and add the sequence node and the parallel node to a selector node.
+        </desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <sequence name='sequence' type="controller">
+                    <correct_positioning name='correct_positioning' type="condition"/>
+                    <parts_detection name='parts_detection' type="condition"/>
+                </sequence>
+                <parallel name='parallel' type="controller">
+                    <grab_parts name='grab_parts' type="action"/>
+                    <positioning_parts name='positioning_parts' type="action"/>
+                </parallel>
+            </selector>
+        </bt>
+    </instruction>
+
+    <instruction>
+        <level>1</level>
+        <desc>Create a selector node, add child nodes correct_positioning and part_status to the selector node, and add
+            child nodes assembly and check_assembly to the sequence node.
+        </desc>
+        <bt>
+            <sequence name='sequence' type="controller">
+                <selector name='selector' type="controller">
+                    <correct_positioning name='correct_positioning' type="condition"/>
+                    <part_status name='part_status' type="condition"/>
+                </selector>
+                <assembly name='assembly' type="action"/>
+                <check_assembly name='check_assembly' type="action"/>
+            </sequence>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add a child node of envs_safety to a selector node, and then add child nodes of grab_parts and
+            correct_positioning to a parallel node.
+        </desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <envs_safety name='envs_safety' type="condition"/>
+            </selector>
+            <parallel name='parallel' type="controller">
+                <grab_parts name='grab_parts' type="action"/>
+                <correct_positioning name='correct_positioning' type="condition"/>
+            </parallel>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add a child node of correct_positioning to a sequence node, and then add child nodes of assembly and
+            check_assembly to another sequence node.
+        </desc>
+        <bt>
+            <sequence name='sequence' type="controller">
+                <correct_positioning name='correct_positioning' type="condition"/>
+            </sequence>
+            <sequence name='sequence' type="controller">
+                <assembly name='assembly' type="action"/>
+                <check_assembly name='check_assembly' type="action"/>
+            </sequence>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add a child node of parts_detection to a selector node, and then add child nodes of correct_positioning
+            and check_assembly to a sequence node.
+        </desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <parts_detection name='parts_detection' type="condition"/>
+            </selector>
+            <sequence name='sequence' type="controller">
+                <correct_positioning name='correct_positioning' type="condition"/>
+                <check_assembly name='check_assembly' type="action"/>
+            </sequence>
+        </bt>
+    </instruction>
+
+    <instruction>
+        <level>1</level>
+        <desc>Add a child node of part_status to a selector node, and then add child nodes of grab_parts and
+            correct_positioning to a parallel node.
+        </desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <part_status name='part_status' type="condition"/>
+            </selector>
+            <parallel name='parallel' type="controller">
+                <grab_parts name='grab_parts' type="action"/>
+                <correct_positioning name='correct_positioning' type="condition"/>
+            </parallel>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add action node interrupt_assembly as child node of sequence controller node.</desc>
+        <bt>
+            <sequence name='sequence' type="controller">
+                <correct_positioning name='correct_positioning' type="condition"/>
+                <interrupt_assembly name='interrupt_assembly' type="action"/>
+                <positioning_parts name='positioning_parts' type="action"/>
+            </sequence>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add the correct_positioning and parts_detection as child nodes to a sequence node.</desc>
+        <bt>
+            <sequence name='sequence' type="controller">
+                <correct_positioning name='correct_positioning' type="condition"/>
+                <parts_detection name='parts_detection' type="condition"/>
+            </sequence>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add controller type node with action type node assembly and condition type node envs_safety as child nodes
+            to a selector node.
+        </desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <assembly name='assembly' type="controller">
+                    <assemble_parts name='assemble_parts' type="action"/>
+                </assembly>
+                <envs_safety name='envs_safety' type="condition"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add interrupt_assembly as a child node under a selector node that has correct_positioning and envs_safety
+            as child nodes.
+        </desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <correct_positioning name='correct_positioning' type="condition"/>
+                <envs_safety name='envs_safety' type="condition"/>
+                <interrupt_assembly name='interrupt_assembly' type="action"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add grab_parts as a child node under a selector node with correct_positioning and envs_safety as child
+            nodes.
+        </desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <correct_positioning name='correct_positioning' type="condition"/>
+                <envs_safety name='envs_safety' type="condition"/>
+                <grab_parts name='grab_parts' type="action"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes positioning_parts and envs_safety to a parallel node.</desc>
+        <bt>
+            <parallel name='parallel' type="controller">
+                <positioning_parts name='positioning_parts' type="action"/>
+                <envs_safety name='envs_safety' type="condition"/>
+            </parallel>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes parts_detection and correct_positioning to a selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <parts_detection name='parts_detection' type="condition"/>
+                <correct_positioning name='correct_positioning' type="condition"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes correct_positioning and part_status to a selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <correct_positioning name='correct_positioning' type="condition"/>
+                <part_status name='part_status' type="condition"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes correct_positioning and envs_safety to a selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <correct_positioning name='correct_positioning' type="condition"/>
+                <envs_safety name='envs_safety' type="condition"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes correct_positioning and positioning_parts to a selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <correct_positioning name='correct_positioning' type="condition"/>
+                <positioning_parts name='positioning_parts' type="action"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes part_status and parts_detection to a selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <part_status name='part_status' type="condition"/>
+                <parts_detection name='parts_detection' type="condition"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add a child node of part_status under a selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <part_status name='part_status' type="condition"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add a child node of grab_parts under a selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <grab_parts name='grab_parts' type="action"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes correct_positioning and grab_parts to the selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <correct_positioning name='correct_positioning' type="action"/>
+                <grab_parts name='grab_parts' type="action"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes correct_positioning and position_parts to the sequence node.</desc>
+        <bt>
+            <sequence name='sequence' type="controller">
+                <correct_positioning name='correct_positioning' type="action"/>
+                <positioning_parts name='positioning_parts' type="action"/>
+            </sequence>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add conditions parts_detection and correct_positioning as child node of a parallel node, and add
+            action grab_parts to this parallel node.
+        </desc>
+        <bt>
+            <parallel name='parallel' type="controller">
+                <parts_detection name='parts_detection' type="condition"/>
+                <correct_positioning name='correct_positioning' type="condition"/>
+                <grab_parts name='grab_parts' type="action"/>
+            </parallel>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add the action node 'check_assembly' as a child node to the selector node 'selector'.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <check_assembly name='check_assembly' type="action"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes check_assembly and interrupt_assembly to a selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <check_assembly name='check_assembly' type="action"/>
+                <interrupt_assembly name='interrupt_assembly' type="action"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes interrupt_assembly and check_assembly to a concurrent node.</desc>
+        <bt>
+            <concurrent name='concurrent' type="controller">
+                <interrupt_assembly name='interrupt_assembly' type="action"/>
+                <check_assembly name='check_assembly' type="action"/>
+            </concurrent>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes check_assembly and request_help to a selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <check_assembly name='check_assembly' type="action"/>
+                <request_help name='request_help' type="action"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add a child node correct_positioning to an existing selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <correct_positioning name='correct_positioning' type="condition"/>
+                <grab_parts name='grab_parts' type="action"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes check_assembly and interrupt_assembly into a sequence node.</desc>
+        <bt>
+            <sequence name='sequence' type="controller">
+                <check_assembly name='check_assembly' type="action"/>
+                <interrupt_assembly name='interrupt_assembly' type="action"/>
+            </sequence>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child node grab_parts into a selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <grab_parts name='grab_parts' type="action"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes correct_positioning and assembly into a selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <correct_positioning name='correct_positioning' type="condition"/>
+                <assembly name='assembly' type="controller">
+                    <assembly_parts name='assembly_parts' type="action"/>
+                </assembly>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes check_assembly and correct_positioning to a selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <check_assembly name='check_assembly' type="action"/>
+                <correct_positioning name='correct_positioning' type="condition"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes correct_positioning and check_assembly to a sequence node.</desc>
+        <bt>
+            <sequence name='sequence' type="controller">
+                <correct_positioning name='correct_positioning' type="condition"/>
+                <check_assembly name='check_assembly' type="action"/>
+            </sequence>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add child nodes correct_positioning and parts_detection to a selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <correct_positioning name='correct_positioning' type="condition"/>
+                <parts_detection name='parts_detection' type="condition"/>
+            </selector>
+        </bt>
+    </instruction>
+    <instruction>
+        <level>1</level>
+        <desc>Add envs_safety and correct_positioning to a selector node.</desc>
+        <bt>
+            <selector name='selector' type="controller">
+                <envs_safety name='envs_safety' type="condition"/>
+                <correct_positioning name='correct_positioning' type="condition"/>
+            </selector>
+        </bt>
+    </instruction>
+</root>

@@ -1,0 +1,8 @@
+<root>
+    <action name="interrupt_assembly">
+        <synonyms name="interrupt assembly"/>
+        <synonyms name="break assembly"/>
+        <synonyms name="中断装配"/>
+        <synonyms name="在检测到不安全情况时中断装配"/>
+    </action>
+</root>

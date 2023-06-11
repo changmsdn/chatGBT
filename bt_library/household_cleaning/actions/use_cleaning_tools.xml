@@ -1,0 +1,8 @@
+<root>
+    <condition name="use_cleaning_tools">
+        <synonyms name="use_cleaning_tools"/>
+        <synonyms name="using cleaning tools"/>
+        <synonyms name="使用清洁工具"/>
+        <synonyms name="使用适当的清洁工具进行清洁操作"/>
+    </condition>
+</root>

@@ -1,0 +1,7 @@
+<root>
+    <condition name="cleanliness">
+        <synonyms name="state of cleanliness"/>
+        <synonyms name="清洁状态"/>
+        <synonyms name="区域的清洁程度"/>
+    </condition>
+</root>

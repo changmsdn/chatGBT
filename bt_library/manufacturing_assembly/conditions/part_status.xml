@@ -1,0 +1,8 @@
+<root>
+    <condition name="part_status">
+        <synonyms name="part status"/>
+        <synonyms name="component status"/>
+        <synonyms name="零件状态"/>
+        <synonyms name="零件是否损坏或缺失"/>
+    </condition>
+</root>

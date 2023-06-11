@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>chatGBT-行为树生成</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="record.js"></script>
+    <link href="index.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- 头-->
+<div id="header">
+    <h1>C</h1>
+    <h1>H</h1>
+    <h1>A</h1>
+    <h1>T</h1>
+    <h1 style="color: red">G</h1>
+    <h1 style="color: red">B</h1>
+    <h1 style="color: red">T</h1>
+</div>
+<!-- 主题 -->
+<div id="content">
+    <!--  选择部分，可以选择输入录音文件，也可以点击录音  -->
+    <div class="select">
+        <h1 class="recognize">File Input：</h1>
+        <a id="upload" onclick="uploadAudioFile()" class="file">Short Audio</a>
+        <a id="upload_long" onclick="uploadLongAudioFile()" class="file">Long Audio</a>
+        <h1>Audio Input：</h1>
+        <img id="record_btn" onclick="record()" src="/record.png" alt="录音"/>
+        <!--        <img id="help" src="" alt="帮助">-->
+        <img src="help.png" alt="帮助" id="help" onclick="displayTooltip()">
+        <textarea id="myTooltip" class="tooltip" readonly="readonly"></textarea>
+    </div>
+
+    <div class="display">
+        <div id="asr_result_and_bot_result">
+            <h1 class="text">Task Description</h1>
+            <textarea id="result_p"></textarea>
+            <div class="btn_bt" onclick="bt_restart()">Restart</div>
+            <div class="btn_bt" onclick="bt_save()">Save</div>
+            <div class="btn_bt" onclick="bt_text2bt()">to BT</div>
+            <h1 class="text">ChatGBT Reply</h1>
+            <textarea id="result_chatgbt" readonly="readonly" placeholder="Bot: 有什么可以帮助您 ^_^ "></textarea>
+        </div>
+        <div id="bt_result">
+            <h1 class="text">Behavior Tree Result</h1>
+            <img id="bt_img" src="bts/bt_display.png" alt="Real-time Behavior Tree Image">
+        </div>
+    </div>
+</div>
+
+<script>
+    let is_recording = false;
+    const host = location.origin;
+    const textarea_task_description = document.getElementById('result_p');
+    const textarea_bot_reply = document.getElementById('result_chatgbt')
+    const img_bt_result = document.getElementById("bt_img")
+    var bt_data = {
+        bt: null,
+        desc: null
+    }
+
+
+    // to_bt函数：将文字信息转换为行为树
+    function bt_text2bt() {
+        // 1 文本发送到服务器进行行为树的生成并且返回
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () { // 收到相应时的回调函数
+            if (xhr.status === 200) {
+                result = JSON.parse(xhr.responseText);
+                if (result.desc === "SUCCESS") {
+                    bt_data = result
+                    textarea_bot_reply.value += "Bot: " + bt_data.desc + "\n"
+                    // 2 得到这个图片并且显示
+                    const xhr2 = new XMLHttpRequest();
+                    xhr2.onload = function () { // 收到相应时的回调函数
+                        if (xhr2.status === 200) {
+                            // 将相应的二进制数据作为图片的src
+                            const img = new Image();  // 创建一个 Image 对象
+                            // img.onload = function () { // 当图片加载完成后执行的回调函数
+                            //     // 设置图片合适的大小
+                            //     set_bt_img_width(img.width);
+                            // };
+                            // 创建一个 Blob 对象，并设置其类型和内容
+                            const blob = new Blob([xhr2.response], {type: 'image/png'});
+                            img.src = URL.createObjectURL(blob);
+                            img_bt_result.src = img.src;
+                        }
+                    };
+                    xhr2.open('Get', "/bt_image"); // 设置请求的 method 和 url
+                    xhr2.responseType = 'blob';
+                    xhr2.send(); // 发送请求
+                } else {
+                    console.info(result.desc)
+                    bt_data.desc = result.desc
+                    console.info(bt_data.desc)
+                    textarea_bot_reply.value += "Bot: " + bt_data.desc + "\n"
+                }
+            } else {
+                console.error('发送数据到服务器时出现错误');
+            }
+        };
+        xhr.open('Post', "/bt_text2bt"); // 设置请求的 method 和 url
+        xhr.setRequestHeader('Content-Type', 'application/json');  // 设置请求头
+        bt_data.desc = textarea_task_description.value
+        xhr.send(JSON.stringify(bt_data)); // 发送请求
+    }
+
+    // Save函数：保存当前行为树到服务器
+    function bt_save() {
+        bt_data.desc = textarea_task_description.value
+        const xhr = new XMLHttpRequest(); // 创建一个XMLHttpRequest对象
+        xhr.onload = function () { // 收到相应时的回调函数
+            if (xhr.status === 200) {
+                result = JSON.parse(xhr.responseText);
+                console.info(result)
+                if (result.desc === "SUCCESS") {
+                    bt_data.bt = null
+                    bt_data.desc = null
+                    textarea_bot_reply.value += "Bot: 任务 “" + textarea_task_description.value + "” 保存成功！^_^\n"
+                } else {
+                    bt_data.desc = result.desc
+                    textarea_bot_reply.value += "Bot: " + bt_data.desc + "\n"
+                }
+            } else {
+                console.error('发送数据到服务器时出现错误');
+            }
+        };
+        xhr.open('Post', "/bt_save"); // 设置请求的 method 和 url
+        xhr.setRequestHeader('Content-Type', 'application/json');  // 设置请求头
+        xhr.send(JSON.stringify(bt_data)); // 发送请求
+    }
+
+
+    // 设置图片大小
+    function set_bt_img_width(img_width) {
+        if (img_width < 300) {  // 这个1200的单位比像素小很多
+            // 计算放大后的宽度和高度
+            img_bt_result.style.width = '30%';
+            img_bt_result.style.height = '30%';
+        } else if (img_width < 500) {
+            img_bt_result.style.width = '60%';
+            img_bt_result.style.height = '60%';
+        } else {
+            img_bt_result.style.width = '95%'
+            img_bt_result.style.height = '95%'
+        }
+    }
+
+    // Restart函数：重置行为树生成
+    function bt_restart() {
+        bt_data.bt = null
+        bt_data.desc = null
+        textarea_bot_reply.value = null
+        textarea_task_description.value = null
+        img_bt_result.src = "bts/bt_display.png"
+    }
+
+    // 设置帮助的显示
+    function displayTooltip() {
+        var tooltip = document.getElementById("myTooltip");
+        if (tooltip.style.display === "none") {
+            tooltip.style.display = "block";
+            getHelpContent()
+        } else {
+            tooltip.style.display = "none";
+        }
+    }
+
+    // 获取帮助信息
+    function getHelpContent() {
+        var tooltip = document.getElementById("myTooltip");
+        // 发送异步请求获取可用节点信息。
+        try {
+            const xhr = new XMLHttpRequest(); // 创建一个XMLHttpRequest对象
+            const url = "/help_content"; // 定义一个请求的 URL
+            // 收到相应时的回调函数
+            xhr.onload = function () {
+                var json_data = JSON.parse(xhr.response);
+                var content_bt = json_data.content;
+                var content = "使用关键词“Restart”“Save”和“to BT”来选择执行逻辑：\n" +
+                    "       “Restart”：清空缓存的行为树。\n" +
+                    "       “Save”：将文本框作为行为树的总结，用于重用。\n" +
+                    "       “to BT”：对文本框的内容进行行为树的映射和生成。\n\n" +
+                    "任务描述说明：\n为了精确和正确的生成行为树，描述的语言可以遵循以下方式：\n" +
+                    "1 行为树描述级： 按照广度优先遍历的方式描述。\n" +
+                    "       关键词：“创建”，“节点”，“孩子”\n" +
+                    "       例子：创建一个 parallel节点，孩子节点为 explore 和 scanning。\n" +
+                    "       例子：创建一个 顺序节点，孩子节点为 检测障碍物 和 避障。\n\n" +
+                    "2 流程描述级：   分为顺序流程，并列流程和条件流程。\n" +
+                    "       关键词：“首先...然后...最后...”，“...同时...”，“如果...就...”\n" +
+                    "       例子：首先检测障碍物，然后在避障。\n\n" +
+                    "3 任务描述级：   对高级任务的映射。\n" +
+                    "       关键词 “执行任务...”\n " +
+                    "       例子：执行任务 帮我拿一个苹果。\n\n" +
+                    "可用行为树节点：\n"
+                content += content_bt
+                tooltip.value = content
+            };
+            xhr.open('Get', url); // 设置请求的method和url
+            xhr.send(); // 发送请求
+        } catch (error) {
+            tooltip.value = "there are some problems here"
+        }
+    }
+
+
+    function record() {
+        if (is_recording) {
+            is_recording = false;
+            stopRecording()
+            document.getElementById('record_btn').src = 'record.png'
+        } else {
+            is_recording = true;
+            startRecording()
+            document.getElementById('record_btn').src = 'recording.gif'
+        }
+    }
+
+    let recorder;
+
+    // 开始录音
+    function startRecording() {
+        let url = 'ws://' + location.hostname + ':5001';
+        PPASRRecorder.get(function (record) {
+            recorder = record;
+        }, url, textarea_task_description);
+    }
+
+    // 停止录音
+    function stopRecording() {
+        recorder.stop();
+    }
+
+    // 上传短语音
+    function uploadAudioFile() {
+        var input = document.createElement("input");
+        input.type = "file";
+        input.accept = "audio/*";
+        input.click();
+        input.onchange = function () {
+            var file = input.files[0];
+            upload_file(host + "/recognition", file, function (state, e) {
+                switch (state) {
+                    case 'uploading':
+                        var percentComplete = Math.round(e.loaded * 100 / e.total) + '%';
+                        console.log(percentComplete);
+                        break;
+                    case 'ok':
+                        console.log(e.target.responseText)
+                        textarea_task_description.innerText = e.target.responseText
+                        break;
+                    case 'error':
+                        alert("上传失败");
+                        break;
+                    case 'cancel':
+                        alert("上传被取消");
+                        break;
+                }
+            });
+        }
+    }
+
+    // 上传长语音
+    function uploadLongAudioFile() {
+        var input = document.createElement("input");
+        input.type = "file";
+        input.accept = "audio/*";
+        input.click();
+        input.onchange = function () {
+            var file = input.files[0];
+            upload_file(host + "/recognition_long_audio", file, function (state, e) {
+                switch (state) {
+                    case 'uploading':
+                        var percentComplete = Math.round(e.loaded * 100 / e.total) + '%';
+                        console.log(percentComplete);
+                        break;
+                    case 'ok':
+                        console.log(e.target.responseText)
+                        textarea_task_description.innerText = e.target.responseText
+                        break;
+                    case 'error':
+                        alert("上传失败");
+                        break;
+                    case 'cancel':
+                        alert("上传被取消");
+                        break;
+                }
+            });
+        }
+    }
+
+    // 上传音频文件
+    upload_file = function (url, file, callback) {
+        var fd = new FormData();
+        // 上传的文件名和数据
+        fd.append("audio", file);
+        var xhr = new XMLHttpRequest();
+        xhr.timeout = 60000
+        if (callback) {
+            xhr.upload.addEventListener("progress", function (e) {
+                callback('uploading', e);
+            }, false);
+            xhr.addEventListener("load", function (e) {
+                callback('ok', e);
+            }, false);
+            xhr.addEventListener("error", function (e) {
+                callback('error', e);
+            }, false);
+            xhr.addEventListener("abort", function (e) {
+                callback('cancel', e);
+            }, false);
+        }
+        xhr.open("POST", url);
+        xhr.send(fd);
+    }
+</script>
+
+</body>
+</html>

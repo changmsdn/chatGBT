@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<root>
-    <selector name="selector">
-        <text name="selector"/>
-        <text name="任一"/>
-        <text name="选择"/>
-    </selector>
-</root>

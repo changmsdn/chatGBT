@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root><task name="explore"><parallel name="parallel"><selector name="selector"><sequence name="sequence"><package_detection name="package_detection" /></sequence></selector></parallel></task></root>

@@ -1,0 +1,8 @@
+<root>
+    <condition name="request_intervention">
+        <synonyms name="request intervention"/>
+        <synonyms name="ask for intervention"/>
+        <synonyms name="请求干预"/>
+        <synonyms name="获取人类操作员的干预和指导"/>
+    </condition>
+</root>

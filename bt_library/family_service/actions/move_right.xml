@@ -1,0 +1,6 @@
+<root>
+    <action name="move_right">
+        <synonyms name="向右移动"/>
+        <synonyms name="右移"/>
+    </action>
+</root>

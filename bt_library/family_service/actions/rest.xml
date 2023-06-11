@@ -1,0 +1,8 @@
+<root>
+    <action name="rest">
+        <synonyms name="take break"/>
+        <synonyms name="takeBreak"/>
+        <synonyms name="待机"/>
+        <synonyms name="休息一下"/>
+    </action>
+</root>

@@ -1,0 +1,10 @@
+<root>
+    <action name="grab_package">
+        <synonyms name="grab package"/>
+        <synonyms name="grab the package"/>
+        <synonyms name="grab package"/>
+        <synonyms name="grab it"/>
+        <synonyms name="抓取包裹"/>
+        <synonyms name="使用机械臂或夹具抓取包裹"/>
+    </action>
+</root>

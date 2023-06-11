@@ -1,0 +1,10 @@
+<root>
+    <condition name="envs_safety">
+        <synonyms name="envs safety"/>
+        <synonyms name="environment safety"/>
+        <synonyms name="environmental safety"/>
+        <synonyms name="environmental security"/>
+        <synonyms name="环境安全"/>
+        <synonyms name="是否存在危险物品或障碍物"/>
+    </condition>
+</root>

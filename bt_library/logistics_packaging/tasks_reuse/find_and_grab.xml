@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root><task name="find_and_grab"><sequence name="sequence"><selector name="selectorIndex" /><sequence name="sequence"><selector name="selectorIndex" /></sequence></sequence></task></root>

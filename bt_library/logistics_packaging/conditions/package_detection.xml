@@ -1,0 +1,8 @@
+<root>
+    <condition name="package_detection">
+        <synonyms name="package detection"/>
+        <synonyms name="parcel inspection"/>
+        <synonyms name="包裹检测"/>
+        <synonyms name="是否存在需要处理的包裹"/>
+    </condition>
+</root>

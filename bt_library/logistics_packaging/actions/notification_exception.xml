@@ -1,0 +1,8 @@
+<root>
+    <action name="notification_exception">
+        <synonyms name="notification exception"/>
+        <synonyms name="notify exception"/>
+        <synonyms name="通知异常"/>
+        <synonyms name="发送通知以报告异常情况或无法完成任务"/>
+    </action>
+</root>

@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root><task name="avoid_obstacle"><sequence name="sequence"><package_type name="package_type" /><grab_package name="grab_package" /><target_location name="target_location" /></sequence></task></root>

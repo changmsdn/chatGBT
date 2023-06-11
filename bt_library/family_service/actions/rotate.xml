@@ -1,0 +1,7 @@
+<root>
+    <action name="rotate">
+        <synonyms name="spin"/>
+        <synonyms name="旋转"/>
+        <synonyms name="转向"/>
+    </action>
+</root>

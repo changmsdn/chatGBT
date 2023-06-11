@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<root>
-    <sequence name="sequence">
-        <text name="sequence"/>
-        <text name="顺序"/>
-        <text name="依次"/>
-        <text name="按序"/>
-    </sequence>
-</root>

@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root><task name="temp"><sequence name="sequence"><grab_parts name="grab_parts" /><parts_detection name="parts_detection" /><assembly name="assembly" /></sequence></task></root>

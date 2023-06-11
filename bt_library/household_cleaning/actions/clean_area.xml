@@ -1,0 +1,8 @@
+<root>
+    <condition name="clean_area">
+        <synonyms name="clean_area"/>
+        <synonyms name="cleaning area"/>
+        <synonyms name="清洁区域"/>
+        <synonyms name="执行清洁操作，清洁区域的表面和地面"/>
+    </condition>
+</root>

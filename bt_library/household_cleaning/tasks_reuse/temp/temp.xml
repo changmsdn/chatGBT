@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root><task name="temp"><sequence name="sequence"><cleaning_tool_detection name="cleaning_tool_detection" /><clean_area_detection name="clean_area_detection" /><check_cleanliness name="check_cleanliness" /></sequence></task></root>

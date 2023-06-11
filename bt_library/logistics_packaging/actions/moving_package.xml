@@ -1,0 +1,8 @@
+<root>
+    <action name="moving_package">
+        <synonyms name="moving package"/>
+        <synonyms name="moving parcel"/>
+        <synonyms name="移动包裹"/>
+        <synonyms name="将包裹移动到目标位置"/>
+    </action>
+</root>

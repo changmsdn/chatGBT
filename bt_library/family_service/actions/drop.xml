@@ -1,0 +1,7 @@
+<root>
+    <action name="drop">
+        <synonyms name="set"/>
+        <synonyms name="放下"/>
+        <synonyms name="放置"/>
+    </action>
+</root>

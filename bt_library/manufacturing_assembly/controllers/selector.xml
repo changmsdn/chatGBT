@@ -1,0 +1,8 @@
+<root>
+    <controller name="selector">
+        <synonyms name="fallback"/>
+        <synonyms name="choose"/>
+        <synonyms name="任一"/>
+        <synonyms name="选择"/>
+    </controller>
+</root>

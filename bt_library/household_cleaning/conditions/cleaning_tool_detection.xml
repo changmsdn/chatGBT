@@ -1,0 +1,8 @@
+<root>
+    <condition name="cleaning_tool_detection">
+        <synonyms name="cleaning tool detection"/>
+        <synonyms name="cleaning tool inspection"/>
+        <synonyms name="清洁工具检测"/>
+        <synonyms name="是否具备适当的清洁工具"/>
+    </condition>
+</root>

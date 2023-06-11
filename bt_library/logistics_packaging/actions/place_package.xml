@@ -1,0 +1,9 @@
+<root>
+    <action name="place_package">
+        <synonyms name="place package"/>
+        <synonyms name="place a package"/>
+        <synonyms name="place the package"/>
+        <synonyms name="放置包裹"/>
+        <synonyms name="将包裹放置在正确的位置"/>
+    </action>
+</root>

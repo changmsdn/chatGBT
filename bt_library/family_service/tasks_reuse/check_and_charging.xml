@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root><task name="check_and_charging"><selector name="selector"><battery_check name="battery_check" /><charging name="charging" /></selector></task></root>

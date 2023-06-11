@@ -1,0 +1,8 @@
+<root>
+    <action name="move_forward">
+        <synonyms name="moveForward"/>
+        <synonyms name="前进"/>
+        <synonyms name="向前"/>
+        <synonyms name="移动"/>
+    </action>
+</root>

@@ -1,0 +1,17 @@
+<root>
+    <rule>
+        <sent>Execute the task: make a beef fried noodles</sent>
+        <steps>
+            <step>Check if you have the required cooking tools</step>
+            <step>Check for dangerous objects or obstacles</step>
+            <step>Check if there are prepared ingredients</step>
+            <step>Check if the previous step has been completed</step>
+            <step>Process and prepare the required ingredients</step>
+            <step>Follow the cooking steps</step>
+            <step>Complete the whole cooking process</step>
+            <step>Interrupt operation when encountering obstacles or dangerous situations</step>
+            <step>Get human operator intervention and guidance</step>
+            <step>Use cooking tools for cooking operation</step>
+        </steps>
+    </rule>
+</root>

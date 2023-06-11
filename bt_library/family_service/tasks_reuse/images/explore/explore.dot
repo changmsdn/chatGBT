@@ -1,0 +1,19 @@
+digraph pastafarianism {
+ordering=out;
+graph [fontname="times-roman"];
+node [fontname="times-roman"];
+edge [fontname="times-roman"];
+parallel [fillcolor=gold, fontcolor=black, fontsize=9, label="parallel\ntype", shape=parallelogram, style=filled];
+selector [fillcolor=cyan, fontcolor=black, fontsize=9, label=selector, shape=octagon, style=filled];
+parallel -> selector;
+move_forward [fillcolor=gray, fontcolor=black, fontsize=9, label=move_forward, shape=ellipse, style=filled];
+selector -> move_forward;
+sequence [fillcolor=orange, fontcolor=black, fontsize=9, label=sequence, shape=box, style=filled];
+selector -> sequence;
+obstacle_detection [fillcolor=gray, fontcolor=black, fontsize=9, label=obstacle_detection, shape=ellipse, style=filled];
+sequence -> obstacle_detection;
+bypass [fillcolor=gray, fontcolor=black, fontsize=9, label=bypass, shape=ellipse, style=filled];
+sequence -> bypass;
+scanning [fillcolor=gray, fontcolor=black, fontsize=9, label=scanning, shape=ellipse, style=filled];
+parallel -> scanning;
+}

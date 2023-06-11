@@ -1,0 +1,8 @@
+<root>
+    <condition name="check_cleanliness">
+        <synonyms name="check_cleanliness"/>
+        <synonyms name="check for cleanliness"/>
+        <synonyms name="检查清洁程度"/>
+        <synonyms name="检查清洁的程度，并判断是否需要进一步清洁或已完成清洁任务"/>
+    </condition>
+</root>

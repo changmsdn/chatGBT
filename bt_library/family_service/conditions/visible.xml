@@ -1,0 +1,8 @@
+<root>
+    <condition name="visible">
+        <synonyms name="can be seen"/>
+        <synonyms name="可见的"/>
+        <synonyms name="可以看到"/>
+        <synonyms name="发现"/>
+    </condition>
+</root>

@@ -1,0 +1,35 @@
+<root>
+    <rule>
+        <pattern>(Create|Generate|Execute|Produce|Add).*(with child nodes|add the child nodes).*</pattern>
+        <code>
+def get_bt(bt_list):
+    root = None
+    for bt in bt_list:
+        if root is None:
+            root = create_bt_node(bt['name'])
+        else:
+            node = create_bt_node(bt['name'])
+            root.add_child(node)
+    return root, "SUCCESS"
+bt, status_info = get_bt(bt_list)
+        </code>
+    </rule>
+    <rule>
+        <pattern>(Create|Generate|Execute|Produce|Add).*to.*</pattern>
+        <code>
+def get_bt(bt_list):
+    root = None
+    for index, bt in enumerate(bt_list):
+        if bt['type'] != 1:
+            continue
+        root = create_bt_node(bt['name'])
+        bt_list.pop(index)
+        break
+    for bt in bt_list:
+        node = create_bt_node(bt['name'])
+        root.add_child(node)
+    return root, "SUCCESS"
+bt, status_info = get_bt(bt_list)
+        </code>
+    </rule>
+</root>

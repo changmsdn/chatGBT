@@ -1,5 +1,0 @@
-pynput
-pyaudio
-wave
-playsound==1.2.2
-setuptools-rust

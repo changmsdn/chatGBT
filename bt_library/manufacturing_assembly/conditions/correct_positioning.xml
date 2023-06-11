@@ -1,0 +1,8 @@
+<root>
+    <condition name="correct_positioning">
+        <synonyms name="correct positioning"/>
+        <synonyms name="correctly positioned"/>
+        <synonyms name="正确定位"/>
+        <synonyms name="是否正确定位零件"/>
+    </condition>
+</root>

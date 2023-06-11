@@ -1,0 +1,9 @@
+<root>
+    <action name="route_plan">
+        <synonyms name="route plan"/>
+        <synonyms name="path planning"/>
+        <synonyms name="route planning"/>
+        <synonyms name="路径规划"/>
+        <synonyms name="规划最佳路径到达目标位置"/>
+    </action>
+</root>

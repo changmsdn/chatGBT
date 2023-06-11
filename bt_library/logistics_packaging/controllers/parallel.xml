@@ -1,0 +1,11 @@
+<root>
+    <controller name="parallel">
+        <synonyms name="at the same time"/>
+        <synonyms name="the same time"/>
+        <synonyms name="simultaneously"/>
+        <synonyms name="同时"/>
+        <synonyms name="并行"/>
+        <synonyms name="一起"/>
+        <synonyms name="并发"/>
+    </controller>
+</root>

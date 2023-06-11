@@ -1,0 +1,8 @@
+<root>
+    <condition name="target_location">
+        <synonyms name="target location"/>
+        <synonyms name="target position"/>
+        <synonyms name="目标位置"/>
+        <synonyms name="需要放置的目标位置"/>
+    </condition>
+</root>

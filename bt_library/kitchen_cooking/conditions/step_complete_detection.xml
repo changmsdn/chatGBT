@@ -1,0 +1,9 @@
+<root>
+    <condition name="step_complete_detection">
+        <synonyms name="step complete detection"/>
+        <synonyms name="step completion detection"/>
+        <synonyms name="步骤完成情况"/>
+        <synonyms name="步骤校验"/>
+        <synonyms name="前一步骤是否已完成"/>
+    </condition>
+</root>

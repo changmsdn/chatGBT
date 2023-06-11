@@ -1,0 +1,8 @@
+<root>
+    <action name="request_help">
+        <synonyms name="request help"/>
+        <synonyms name="ask for help"/>
+        <synonyms name="请求帮助"/>
+        <synonyms name="发送请求以获取人类操作员的帮助"/>
+    </action>
+</root>

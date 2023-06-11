@@ -1,0 +1,44 @@
+<root>
+    <rule>
+        <pattern>(.*? and .*?), then (.*)</pattern>
+        <code>
+def get_bt(bt_list):
+    root = create_bt_node("sequence")
+    for bt in bt_list:
+        bt_node = create_bt_node(bt['name'])
+        root.add_child(bt_node)
+    return root, "SUCCESS"
+bt, status_info = get_bt(bt_list)
+        </code>
+    </rule>
+    <rule>
+        <pattern>(.*?) (to.*)(the same time)</pattern>
+        <code>
+def get_bt(bt_list):
+    root = None
+    for index, bt in enumerate(reversed(bt_list)):
+        if bt['type'] == 1:
+            root = create_bt_node(bt['name'])
+            bt_list.pop(-index-1)
+            break
+    print(bt_list)
+    for bt in bt_list:
+        bt_node = create_bt_node(bt['name'])
+        root.add_child(bt_node)
+    return root, "SUCCESS"
+bt, status_info = get_bt(bt_list)
+        </code>
+    </rule>
+    <rule>
+        <pattern>(.*?), (.*?), and then (.*?) (to .*?)</pattern>
+        <code>
+def get_bt(bt_list):
+    root = create_bt_node("sequence")
+    for bt in bt_list:
+        bt_node = create_bt_node(bt['name'])
+        root.add_child(bt_node)
+    return root, "SUCCESS"
+bt, status_info = get_bt(bt_list)
+        </code>
+    </rule>
+</root>

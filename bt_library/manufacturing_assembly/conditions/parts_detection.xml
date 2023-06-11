@@ -1,0 +1,8 @@
+<root>
+    <condition name="parts_detection">
+        <synonyms name="parts detection"/>
+        <synonyms name="parts inspection"/>
+        <synonyms name="零件检测"/>
+        <synonyms name="是否存在需要装配的零件"/>
+    </condition>
+</root>

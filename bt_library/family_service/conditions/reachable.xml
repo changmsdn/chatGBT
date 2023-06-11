@@ -1,0 +1,7 @@
+<root>
+    <condition name="reachable">
+        <synonyms name="can be reached"/>
+        <synonyms name="可达到"/>
+        <synonyms name="可以摸到"/>
+    </condition>
+</root>

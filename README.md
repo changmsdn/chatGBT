@@ -1,17 +1,40 @@
-# chatGBT
+# ChatGBT
 使用自然语言生成行为树的引擎
 
-# 安装需要
-## 1 py_trees 相关
-- pydot
+# 1 安装需要
 
-## 2 asr 相关
-- 使用的是paddlepaddle的框架
-```pip
-    conda install paddlepaddle-gpu==2.4.1 cudatoolkit=11.7 -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/Paddle/ -c conda-forge
-``` 
-- 其他依赖包，注意需要安装C++14以上
-```pip
-    pip install requirements.txt
-```
+## 1.1 第三方项目依赖下载
+### 1 py_trees 
+- 注意pydot要使用conda的下载
+### 2 ppasr
+- 根据requirement.txt来下载，不要使用setup.py
+- 还有很多依赖包，如解码，itn，pyni等都需要额外安装。可以运行时不断排错安装即可
+### 3 spacy
+- 注意使用shell代理，然后下载相关模型
 
+## 1.2 chat-gbt 项目依赖下载
+
+
+# 2 功能实现
+## 1 已完成
+1 实现行为树描述级的自然语言生成行为树
+
+2 实现节点向量化
+
+3 实现全流程 人机交互界面到行为树的生成并且反馈
+
+4 从充电，避障低级任务到 帮我拿东西 高级任务的过程
+
+## 2 待优化
+1 bt library 映射匹配问题：向量化过程中，虽然融合了中英文的词向量，但是语义相似度计算不符合设想
+
+2 歧义消解插入点如何选择
+
+3 带序号的行为树描述级优化 eg:执行3个sequence，第二个sequence的子节点为XXX。
+
+## 3 未来
+1 task_reuse 如何抽象存储 以及 可重用行为树本身的优化。
+
+2 基于LLM
+
+3 基于意图识别 rasa

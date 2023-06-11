@@ -1,0 +1,11 @@
+digraph pastafarianism {
+ordering=out;
+graph [fontname="times-roman"];
+node [fontname="times-roman"];
+edge [fontname="times-roman"];
+sequence [fillcolor=orange, fontcolor=black, fontsize=9, label=sequence, shape=box, style=filled];
+obstacle_detection [fillcolor=gray, fontcolor=black, fontsize=9, label=obstacle_detection, shape=ellipse, style=filled];
+sequence -> obstacle_detection;
+bypass [fillcolor=gray, fontcolor=black, fontsize=9, label=bypass, shape=ellipse, style=filled];
+sequence -> bypass;
+}

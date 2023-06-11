@@ -1,2 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<root><task name="temp"><parallel name="parallel"><sequence name="sequenceIndex" /><selector name="selectorIndex" /><sequence name="sequenceIndex" /></parallel></task></root>
